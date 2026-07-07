@@ -7,7 +7,7 @@ import { OrdersTable } from "@/components/dashboard/orders-table"
 export function Dashboard() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-10 border-b border-border/60 bg-background/80 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-border bg-background [transform:translateZ(0)] [will-change:transform]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
             <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
