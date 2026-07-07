@@ -1,13 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import { Search } from "lucide-react"
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import {
   Table,
@@ -19,14 +14,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+
 import { cn } from "@/lib/utils"
 import { currency, orders, type OrderStatus } from "@/lib/dashboard-data"
 
@@ -45,53 +33,10 @@ const initials = (name: string) =>
     .join("")
 
 export function OrdersTable() {
-  const [query, setQuery] = useState("")
-  const [status, setStatus] = useState<string>("all")
-
-  const filtered = useMemo(() => {
-    return orders.filter((order) => {
-      const matchesQuery =
-        order.customer.toLowerCase().includes(query.toLowerCase()) ||
-        order.id.toLowerCase().includes(query.toLowerCase()) ||
-        order.email.toLowerCase().includes(query.toLowerCase())
-      const matchesStatus = status === "all" || order.status === status
-      return matchesQuery && matchesStatus
-    })
-  }, [query, status])
 
   return (
     <Card className="border-border/60">
-      <CardHeader className="gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div className="space-y-1.5">
-          <CardTitle>Последние заказы</CardTitle>
-          <CardDescription>{filtered.length} из {orders.length} заказов</CardDescription>
-        </div>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Поиск по клиенту или номеру…"
-              className="w-full pl-9 sm:w-64"
-              aria-label="Поиск заказов"
-            />
-          </div>
-          <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger className="w-full sm:w-40" aria-label="Фильтр по статусу">
-              <SelectValue placeholder="Статус" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Все статусы</SelectItem>
-              <SelectItem value="Оплачен">Оплачен</SelectItem>
-              <SelectItem value="В обработке">В обработке</SelectItem>
-              <SelectItem value="Отправлен">Отправлен</SelectItem>
-              <SelectItem value="Отменён">Отменён</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
@@ -104,7 +49,7 @@ export function OrdersTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.map((order) => (
+              {orders.map((order) => (
                 <TableRow key={order.id}>
                   <TableCell className="font-medium text-foreground">{order.id}</TableCell>
                   <TableCell>
@@ -136,13 +81,7 @@ export function OrdersTable() {
                   </TableCell>
                 </TableRow>
               ))}
-              {filtered.length === 0 && (
-                <TableRow className="hover:bg-transparent">
-                  <TableCell colSpan={5} className="py-10 text-center text-muted-foreground">
-                    Заказы не найдены
-                  </TableCell>
-                </TableRow>
-              )}
+
             </TableBody>
           </Table>
         </div>
