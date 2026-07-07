@@ -24,7 +24,7 @@ export function Dashboard() {
           </Button>
         </header>
 
-        <main className="mx-auto w-full max-w-6xl space-y-6 px-4 py-8 sm:px-6">
+        <main className="flex flex-1 flex-col p-6">
           <OrdersTable />
         </main>
       </SidebarInset>
