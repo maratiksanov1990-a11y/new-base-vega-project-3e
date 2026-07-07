@@ -21,10 +21,11 @@ export default function RootLayout({
       lang="ru"
       suppressHydrationWarning
       className={`${fontSans.variable} bg-background`}
-      style={{ overflowAnchor: "none" }}
+      style={{ overflowAnchor: "none", overscrollBehavior: "none" }}
     >
       <body
         className="antialiased"
+        style={{ overscrollBehavior: "none" }}
       >
         <ThemeProvider>{children}</ThemeProvider>
       </body>
