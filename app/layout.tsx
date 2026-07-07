@@ -7,8 +7,8 @@ const fontSans = Inter({subsets:['latin'],variable:'--font-sans'});
 
 
 export const metadata: Metadata = {
-  title: "Панель управления — Аналитика",
-  description: "Дашборд с ключевыми метриками, графиками и таблицей заказов",
+  title: "Постинг — Контент",
+  description: "Управление контентом для автопостинга в социальные сети",
 };
 
 export default function RootLayout({
