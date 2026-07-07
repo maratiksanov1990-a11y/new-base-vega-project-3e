@@ -17,7 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning className={`${fontSans.variable} bg-background`}>
+    <html
+      lang="ru"
+      suppressHydrationWarning
+      className={`${fontSans.variable} bg-background`}
+      style={{ overflowAnchor: "none" }}
+    >
       <body
         className="antialiased"
       >
