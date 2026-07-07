@@ -3,7 +3,7 @@ import { ContentTable } from "@/components/posting/content-table"
 
 export function Dashboard() {
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
+    <div className="dark flex h-screen w-full overflow-hidden bg-[#0c0c0c]">
       <PostingSidebar />
       <ContentTable />
     </div>

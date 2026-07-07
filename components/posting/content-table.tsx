@@ -25,7 +25,7 @@ const columns = [
 
 function FormatIcon({ type }: { type: ContentRow["format"] }) {
   const Icon = type === "story" ? GalleryHorizontal : LayoutGrid
-  return <Icon className="size-5 text-foreground/80" strokeWidth={1.5} />
+  return <Icon className="size-5 text-[#c4c4c4]" strokeWidth={1.5} />
 }
 
 export function ContentTable() {
@@ -45,39 +45,39 @@ export function ContentTable() {
     })
 
   return (
-    <div className="flex h-screen flex-1 flex-col bg-background p-4">
+    <div className="flex h-screen flex-1 flex-col bg-[#0c0c0c] p-4">
       {/* Toolbar */}
       <div className="mb-4 flex items-center gap-3">
-        <button className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+        <button className="flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#161616] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#1e1e1e]">
           <Plus className="size-4" />
           Добавить
         </button>
-        <button className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent">
-          <ChevronDown className="size-4 text-muted-foreground" />
+        <button className="flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#161616] px-4 py-2.5 text-sm font-medium text-[#c4c4c4] transition-colors hover:bg-[#1e1e1e]">
+          <ChevronDown className="size-4 text-[#7a7a7a]" />
           Действия
         </button>
 
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[#7a7a7a]" />
           <input
             type="text"
             placeholder="Поиск"
-            className="h-11 w-full rounded-xl border border-border bg-card pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring"
+            className="h-11 w-full rounded-xl border border-[#2a2a2a] bg-[#161616] pl-11 pr-4 text-sm text-white placeholder:text-[#7a7a7a] outline-none focus:border-[#3a3a3a]"
           />
         </div>
 
-        <button className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent">
-          <SlidersHorizontal className="size-4 text-muted-foreground" />
+        <button className="flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#161616] px-4 py-2.5 text-sm font-medium text-[#c4c4c4] transition-colors hover:bg-[#1e1e1e]">
+          <SlidersHorizontal className="size-4 text-[#7a7a7a]" />
           Фильтры
-          <ChevronDown className="size-4 text-muted-foreground" />
+          <ChevronDown className="size-4 text-[#7a7a7a]" />
         </button>
       </div>
 
       {/* Table panel */}
-      <div className="flex-1 overflow-auto rounded-2xl border border-border bg-card">
+      <div className="flex-1 overflow-auto rounded-2xl border border-[#1f1f1f] bg-[#111111]">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
+            <tr className="border-b border-[#1f1f1f] bg-[#161616]">
               <th className="w-14 px-5 py-4">
                 <Checkbox checked={allSelected} onChange={toggleAll} />
               </th>
@@ -85,7 +85,7 @@ export function ContentTable() {
                 <th
                   key={col.key}
                   className={cn(
-                    "px-3 py-4 text-left text-sm font-normal text-muted-foreground",
+                    "px-3 py-4 text-left text-sm font-normal text-[#8a8a8a]",
                     col.key === "publications" && "pr-6 text-right",
                   )}
                 >
@@ -97,7 +97,7 @@ export function ContentTable() {
                   >
                     {col.label}
                     {col.sortable && (
-                      <ChevronDown className="size-3.5 text-muted-foreground/70" />
+                      <ChevronDown className="size-3.5 text-[#5a5a5a]" />
                     )}
                   </span>
                 </th>
@@ -110,7 +110,7 @@ export function ContentTable() {
               return (
                 <tr
                   key={row.id}
-                  className="border-b border-border transition-colors hover:bg-muted/50"
+                  className="border-b border-[#1a1a1a] transition-colors hover:bg-[#161616]"
                 >
                   <td className="px-5 py-4 align-top">
                     <Checkbox
@@ -119,7 +119,7 @@ export function ContentTable() {
                     />
                   </td>
                   <td className="px-3 py-4 align-top">
-                    <span className="text-[15px] text-foreground">{row.topic}</span>
+                    <span className="text-[15px] text-white">{row.topic}</span>
                   </td>
                   <td className="px-3 py-4 align-top">
                     <div className="relative size-11 overflow-hidden rounded-lg">
@@ -134,7 +134,7 @@ export function ContentTable() {
                     </div>
                   </td>
                   <td className="max-w-xs px-3 py-4 align-top">
-                    <p className="text-sm leading-snug text-muted-foreground">
+                    <p className="text-sm leading-snug text-[#b4b4b4]">
                       {row.text}
                     </p>
                   </td>
@@ -145,13 +145,13 @@ export function ContentTable() {
                     <FormatIcon type={row.view} />
                   </td>
                   <td className="px-3 py-4 align-top">
-                    <span className="text-sm text-muted-foreground">{row.addedAt}</span>
+                    <span className="text-sm text-[#b4b4b4]">{row.addedAt}</span>
                   </td>
                   <td className="px-3 py-4 align-top">
-                    <span className="text-[15px] text-foreground">{row.author}</span>
+                    <span className="text-[15px] text-white">{row.author}</span>
                   </td>
                   <td className="px-3 py-4 pr-6 text-right align-top">
-                    <span className="text-[15px] text-foreground">
+                    <span className="text-[15px] text-white">
                       {row.publications}
                     </span>
                   </td>
@@ -199,15 +199,15 @@ function Checkbox({
       className={cn(
         "flex size-5 items-center justify-center rounded-[5px] border transition-colors",
         checked
-          ? "border-primary bg-primary"
-          : "border-input bg-transparent hover:border-muted-foreground",
+          ? "border-white bg-white"
+          : "border-[#3a3a3a] bg-transparent hover:border-[#555]",
       )}
     >
       {checked && (
         <svg
           viewBox="0 0 24 24"
           fill="none"
-          className="size-3.5 text-primary-foreground"
+          className="size-3.5 text-black"
           stroke="currentColor"
           strokeWidth="3"
           strokeLinecap="round"
