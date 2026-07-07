@@ -1,10 +1,6 @@
 "use client"
 
 import {
-  Card,
-  CardContent,
-} from "@/components/ui/card"
-import {
   Table,
   TableBody,
   TableCell,
@@ -33,12 +29,10 @@ const initials = (name: string) =>
     .join("")
 
 export function OrdersTable() {
-
   return (
-    <Card className="border-border/60">
-      <CardContent className="pt-6">
-        <div className="overflow-x-auto">
-          <Table>
+    <div className="rounded-2xl border border-border bg-card p-6">
+      <div className="overflow-x-auto">
+        <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead>Заказ</TableHead>
@@ -83,9 +77,8 @@ export function OrdersTable() {
               ))}
 
             </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+        </Table>
+      </div>
+    </div>
   )
 }
