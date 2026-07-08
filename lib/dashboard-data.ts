@@ -164,6 +164,32 @@ export const orders: Order[] = [
   },
 ]
 
+export type ShipmentStatus = "В пути" | "Доставлено" | "Ожидает" | "Возврат"
+
+export type Shipment = {
+  id: string
+  orderId: string
+  courier: string
+  city: string
+  status: ShipmentStatus
+  eta: string
+}
+
+export const shipments: Shipment[] = [
+  { id: "TRK-8801", orderId: "#3210", courier: "СДЭК", city: "Москва", status: "В пути", eta: "2026-07-05" },
+  { id: "TRK-8802", orderId: "#3209", courier: "Boxberry", city: "Санкт-Петербург", status: "Ожидает", eta: "2026-07-06" },
+  { id: "TRK-8803", orderId: "#3208", courier: "Почта России", city: "Казань", status: "Доставлено", eta: "2026-07-03" },
+  { id: "TRK-8804", orderId: "#3207", courier: "СДЭК", city: "Новосибирск", status: "В пути", eta: "2026-07-07" },
+  { id: "TRK-8805", orderId: "#3206", courier: "DPD", city: "Екатеринбург", status: "Возврат", eta: "2026-07-04" },
+  { id: "TRK-8806", orderId: "#3205", courier: "Boxberry", city: "Нижний Новгород", status: "Доставлено", eta: "2026-07-02" },
+  { id: "TRK-8807", orderId: "#3204", courier: "СДЭК", city: "Самара", status: "В пути", eta: "2026-07-08" },
+  { id: "TRK-8808", orderId: "#3203", courier: "Почта России", city: "Омск", status: "Ожидает", eta: "2026-07-09" },
+  { id: "TRK-8809", orderId: "#3202", courier: "DPD", city: "Челябинск", status: "Доставлено", eta: "2026-07-01" },
+  { id: "TRK-8810", orderId: "#3201", courier: "СДЭК", city: "Ростов-на-Дону", status: "В пути", eta: "2026-07-10" },
+  { id: "TRK-8811", orderId: "#3200", courier: "Boxberry", city: "Уфа", status: "Доставлено", eta: "2026-06-30" },
+  { id: "TRK-8812", orderId: "#3199", courier: "DPD", city: "Красноярск", status: "Ожидает", eta: "2026-07-11" },
+]
+
 export const revenueData = [
   { month: "Янв", revenue: 42000 },
   { month: "Фев", revenue: 48500 },

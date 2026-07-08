@@ -23,14 +23,19 @@ import {
 } from "@/components/ui/sidebar"
 
 const navItems = [
-  { title: "Обзор", icon: LayoutDashboard, active: true },
+  { title: "Обзор", icon: LayoutDashboard },
   { title: "Заказы", icon: ShoppingCart },
   { title: "Клиенты", icon: Users },
   { title: "Товары", icon: Package },
   { title: "Аналитика", icon: BarChart3 },
 ]
 
-export function AppSidebar() {
+type AppSidebarProps = {
+  active: string
+  onSelect: (title: string) => void
+}
+
+export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -51,7 +56,11 @@ export function AppSidebar() {
             <SidebarMenu>
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton isActive={item.active} tooltip={item.title}>
+                  <SidebarMenuButton
+                    isActive={active === item.title}
+                    tooltip={item.title}
+                    onClick={() => onSelect(item.title)}
+                  >
                     <item.icon />
                     <span>{item.title}</span>
                   </SidebarMenuButton>
