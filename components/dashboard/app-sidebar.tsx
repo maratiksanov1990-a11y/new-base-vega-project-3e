@@ -1,5 +1,7 @@
 "use client"
 
+import * as React from "react"
+import { useTheme } from "next-themes"
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -7,6 +9,8 @@ import {
   BarChart3,
   Package,
   Settings,
+  Moon,
+  Sun,
 } from "lucide-react"
 
 import {
@@ -78,8 +82,33 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
               <span>Настройки</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          <SidebarMenuItem>
+            <ThemeToggle />
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
+  )
+}
+
+function ThemeToggle() {
+  const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isDark = mounted ? resolvedTheme === "dark" : true
+  const label = isDark ? "Светлая тема" : "Тёмная тема"
+
+  return (
+    <SidebarMenuButton
+      tooltip={label}
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+    >
+      {isDark ? <Sun /> : <Moon />}
+      <span>{label}</span>
+    </SidebarMenuButton>
   )
 }
