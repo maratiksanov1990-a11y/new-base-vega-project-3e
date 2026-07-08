@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   Table,
   TableBody,
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Checkbox } from "@/components/ui/checkbox"
 
 import { cn } from "@/lib/utils"
 import { currency, orders, type OrderStatus } from "@/lib/dashboard-data"
@@ -29,22 +31,46 @@ const initials = (name: string) =>
     .join("")
 
 export function OrdersTable() {
+  const [selected, setSelected] = useState<string[]>([])
+
+  const allSelected = selected.length === orders.length && orders.length > 0
+  const toggleAll = (checked: boolean) =>
+    setSelected(checked ? orders.map((order) => order.id) : [])
+  const toggleRow = (id: string, checked: boolean) =>
+    setSelected((prev) =>
+      checked ? [...prev, id] : prev.filter((item) => item !== id),
+    )
+
   return (
-    <div className="rounded-2xl border border-border bg-card p-6">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
       <div className="overflow-x-auto">
         <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
+                <TableHead className="w-12 pl-4">
+                  <Checkbox
+                    checked={allSelected}
+                    onCheckedChange={(checked) => toggleAll(checked === true)}
+                    aria-label="Выбрать все заказы"
+                  />
+                </TableHead>
                 <TableHead>Заказ</TableHead>
                 <TableHead>Клиент</TableHead>
                 <TableHead>Статус</TableHead>
                 <TableHead>Дата</TableHead>
-                <TableHead className="text-right">Сумма</TableHead>
+                <TableHead className="pr-4 text-right">Сумма</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {orders.map((order) => (
-                <TableRow key={order.id}>
+                <TableRow key={order.id} data-state={selected.includes(order.id) ? "selected" : undefined}>
+                  <TableCell className="pl-4">
+                    <Checkbox
+                      checked={selected.includes(order.id)}
+                      onCheckedChange={(checked) => toggleRow(order.id, checked === true)}
+                      aria-label={`Выбрать заказ ${order.id}`}
+                    />
+                  </TableCell>
                   <TableCell className="font-medium text-foreground">{order.id}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
@@ -70,7 +96,7 @@ export function OrdersTable() {
                       month: "short",
                     })}
                   </TableCell>
-                  <TableCell className="text-right font-medium tabular-nums text-foreground">
+                  <TableCell className="pr-4 text-right font-medium tabular-nums text-foreground">
                     {currency(order.amount)}
                   </TableCell>
                 </TableRow>
