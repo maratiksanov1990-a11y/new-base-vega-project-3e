@@ -103,7 +103,6 @@ export function OrdersTable() {
 
             </TableBody>
         </Table>
-      </div>
     </div>
   )
 }
