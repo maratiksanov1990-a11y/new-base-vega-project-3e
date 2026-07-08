@@ -36,7 +36,7 @@ export function ShipmentsTable() {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
         <Table containerClassName="flex-1 overflow-auto">
-          <TableHeader className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card">
+          <TableHeader className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:border-b [&_th]:border-border [&_th]:bg-card">
             <TableRow className="h-14 hover:bg-transparent">
               <TableHead className="w-12 pl-4">
                 <Checkbox
@@ -47,9 +47,12 @@ export function ShipmentsTable() {
               </TableHead>
               <TableHead>Трек-номер</TableHead>
               <TableHead>Заказ</TableHead>
+              <TableHead>Получатель</TableHead>
               <TableHead>Курьер</TableHead>
               <TableHead>Город</TableHead>
+              <TableHead>Вес</TableHead>
               <TableHead>Статус</TableHead>
+              <TableHead className="text-right">Стоимость</TableHead>
               <TableHead className="pr-4 text-right">Доставка</TableHead>
             </TableRow>
           </TableHeader>
@@ -65,13 +68,16 @@ export function ShipmentsTable() {
                 </TableCell>
                 <TableCell className="font-medium text-foreground">{shipment.id}</TableCell>
                 <TableCell className="text-muted-foreground">{shipment.orderId}</TableCell>
+                <TableCell className="text-foreground">{shipment.recipient}</TableCell>
                 <TableCell className="text-foreground">{shipment.courier}</TableCell>
                 <TableCell className="text-foreground">{shipment.city}</TableCell>
+                <TableCell className="tabular-nums text-muted-foreground">{shipment.weight}</TableCell>
                 <TableCell>
                   <Badge variant="outline" className={cn("font-medium", statusStyles[shipment.status])}>
                     {shipment.status}
                   </Badge>
                 </TableCell>
+                <TableCell className="text-right tabular-nums text-foreground">{shipment.cost} ₽</TableCell>
                 <TableCell className="pr-4 text-right text-muted-foreground">
                   {new Date(shipment.eta).toLocaleDateString("ru-RU", {
                     day: "2-digit",
