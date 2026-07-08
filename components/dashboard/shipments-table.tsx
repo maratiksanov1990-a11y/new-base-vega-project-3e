@@ -36,7 +36,7 @@ export function ShipmentsTable() {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
         <Table containerClassName="flex-1 overflow-auto">
-          <TableHeader className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:border-b [&_th]:border-border [&_th]:bg-card">
+          <TableHeader className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
             <TableRow className="h-14 hover:bg-transparent">
               <TableHead className="w-12 pl-4">
                 <Checkbox
@@ -51,6 +51,9 @@ export function ShipmentsTable() {
               <TableHead>Курьер</TableHead>
               <TableHead>Город</TableHead>
               <TableHead>Вес</TableHead>
+              <TableHead>Габариты</TableHead>
+              <TableHead className="text-center">Попыток</TableHead>
+              <TableHead className="text-center">Страховка</TableHead>
               <TableHead>Статус</TableHead>
               <TableHead className="text-right">Стоимость</TableHead>
               <TableHead className="pr-4 text-right">Доставка</TableHead>
@@ -72,6 +75,9 @@ export function ShipmentsTable() {
                 <TableCell className="text-foreground">{shipment.courier}</TableCell>
                 <TableCell className="text-foreground">{shipment.city}</TableCell>
                 <TableCell className="tabular-nums text-muted-foreground">{shipment.weight}</TableCell>
+                <TableCell className="tabular-nums text-muted-foreground">{shipment.dimensions}</TableCell>
+                <TableCell className="text-center tabular-nums text-foreground">{shipment.attempts}</TableCell>
+                <TableCell className="text-center text-muted-foreground">{shipment.insured}</TableCell>
                 <TableCell>
                   <Badge variant="outline" className={cn("font-medium", statusStyles[shipment.status])}>
                     {shipment.status}

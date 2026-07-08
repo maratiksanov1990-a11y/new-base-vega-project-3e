@@ -12,13 +12,23 @@ export type Order = {
   manager: string
   items: number
   payment: string
+  source: string
+  discount: number
+  delivery: string
 }
+
+type BaseOrder = Omit<
+  Order,
+  "phone" | "city" | "manager" | "items" | "payment" | "source" | "discount" | "delivery"
+>
 
 const cities = ["Москва", "Санкт-Петербург", "Казань", "Новосибирск", "Екатеринбург", "Самара"]
 const managers = ["Ольга К.", "Дмитрий В.", "Анна М.", "Сергей П."]
 const payments = ["Карта", "Наличные", "Перевод", "Рассрочка"]
+const sources = ["Сайт", "Мобильное приложение", "Маркетплейс", "Соцсети"]
+const deliveries = ["Курьер", "Самовывоз", "Почта", "Постамат"]
 
-function enrichOrder(order: Omit<Order, "phone" | "city" | "manager" | "items" | "payment">, index: number): Order {
+function enrichOrder(order: BaseOrder, index: number): Order {
   return {
     ...order,
     phone: `+7 (9${String(10 + index).slice(0, 2)}) ${String(100 + index).slice(0, 3)}-${String(10 + index).slice(0, 2)}-${String(20 + index).slice(0, 2)}`,
@@ -26,10 +36,13 @@ function enrichOrder(order: Omit<Order, "phone" | "city" | "manager" | "items" |
     manager: managers[index % managers.length],
     items: (index % 5) + 1,
     payment: payments[index % payments.length],
+    source: sources[index % sources.length],
+    discount: (index % 4) * 5,
+    delivery: deliveries[index % deliveries.length],
   }
 }
 
-const baseOrders: Omit<Order, "phone" | "city" | "manager" | "items" | "payment">[] = [
+const baseOrders: BaseOrder[] = [
   {
     id: "#3210",
     customer: "Анна Смирнова",
@@ -198,21 +211,24 @@ export type Shipment = {
   weight: string
   cost: number
   recipient: string
+  dimensions: string
+  attempts: number
+  insured: string
 }
 
 export const shipments: Shipment[] = [
-  { id: "TRK-8801", orderId: "#3210", courier: "СДЭК", city: "Москва", status: "В пути", eta: "2026-07-05", weight: "1.2 кг", cost: 350, recipient: "Анна Смирнова" },
-  { id: "TRK-8802", orderId: "#3209", courier: "Boxberry", city: "Санкт-Петербург", status: "Ожидает", eta: "2026-07-06", weight: "0.8 кг", cost: 290, recipient: "Игорь Петров" },
-  { id: "TRK-8803", orderId: "#3208", courier: "Почта России", city: "Казань", status: "Доставлено", eta: "2026-07-03", weight: "2.5 кг", cost: 420, recipient: "Мария Кузнецова" },
-  { id: "TRK-8804", orderId: "#3207", courier: "СДЭК", city: "Новосибирск", status: "В пути", eta: "2026-07-07", weight: "1.0 кг", cost: 510, recipient: "Дмитрий Волков" },
-  { id: "TRK-8805", orderId: "#3206", courier: "DPD", city: "Екатеринбург", status: "Возврат", eta: "2026-07-04", weight: "3.1 кг", cost: 480, recipient: "Елена Соколова" },
-  { id: "TRK-8806", orderId: "#3205", courier: "Boxberry", city: "Нижний Новгород", status: "Доставлено", eta: "2026-07-02", weight: "0.5 кг", cost: 250, recipient: "Артём Новиков" },
-  { id: "TRK-8807", orderId: "#3204", courier: "СДЭК", city: "Самара", status: "В пути", eta: "2026-07-08", weight: "1.8 кг", cost: 390, recipient: "Ольга Морозова" },
-  { id: "TRK-8808", orderId: "#3203", courier: "Почта России", city: "Омск", status: "Ожидает", eta: "2026-07-09", weight: "2.0 кг", cost: 440, recipient: "Сергей Лебедев" },
-  { id: "TRK-8809", orderId: "#3202", courier: "DPD", city: "Челябинск", status: "Доставлено", eta: "2026-07-01", weight: "0.9 кг", cost: 310, recipient: "Наталья Козлова" },
-  { id: "TRK-8810", orderId: "#3201", courier: "СДЭК", city: "Ростов-на-Дону", status: "В пути", eta: "2026-07-10", weight: "1.5 кг", cost: 460, recipient: "Павел Егоров" },
-  { id: "TRK-8811", orderId: "#3200", courier: "Boxberry", city: "Уфа", status: "Доставлено", eta: "2026-06-30", weight: "1.1 кг", cost: 330, recipient: "Виктория Иванова" },
-  { id: "TRK-8812", orderId: "#3199", courier: "DPD", city: "Красноярск", status: "Ожидает", eta: "2026-07-11", weight: "2.7 кг", cost: 520, recipient: "Максим Соколов" },
+  { id: "TRK-8801", orderId: "#3210", courier: "СДЭК", city: "Москва", status: "В пути", eta: "2026-07-05", weight: "1.2 кг", cost: 350, recipient: "Анна Смирнова", dimensions: "30×20×10", attempts: 1, insured: "Да" },
+  { id: "TRK-8802", orderId: "#3209", courier: "Boxberry", city: "Санкт-Петербург", status: "Ожидает", eta: "2026-07-06", weight: "0.8 кг", cost: 290, recipient: "Игорь Петров", dimensions: "25×15×8", attempts: 0, insured: "Нет" },
+  { id: "TRK-8803", orderId: "#3208", courier: "Почта России", city: "Казань", status: "Доставлено", eta: "2026-07-03", weight: "2.5 кг", cost: 420, recipient: "Мария Кузнецова", dimensions: "40×30×20", attempts: 2, insured: "Да" },
+  { id: "TRK-8804", orderId: "#3207", courier: "СДЭК", city: "Новосибирск", status: "В пути", eta: "2026-07-07", weight: "1.0 кг", cost: 510, recipient: "Дмитрий Волков", dimensions: "28×18×12", attempts: 1, insured: "Да" },
+  { id: "TRK-8805", orderId: "#3206", courier: "DPD", city: "Екатеринбург", status: "Возврат", eta: "2026-07-04", weight: "3.1 кг", cost: 480, recipient: "Елена Соколова", dimensions: "45×35×25", attempts: 3, insured: "Нет" },
+  { id: "TRK-8806", orderId: "#3205", courier: "Boxberry", city: "Нижний Новгород", status: "Доставлено", eta: "2026-07-02", weight: "0.5 кг", cost: 250, recipient: "Артём Новиков", dimensions: "20×12×6", attempts: 1, insured: "Нет" },
+  { id: "TRK-8807", orderId: "#3204", courier: "СДЭК", city: "Самара", status: "В пути", eta: "2026-07-08", weight: "1.8 кг", cost: 390, recipient: "Ольга Морозова", dimensions: "35×25×15", attempts: 1, insured: "Да" },
+  { id: "TRK-8808", orderId: "#3203", courier: "Почта России", city: "Омск", status: "Ожидает", eta: "2026-07-09", weight: "2.0 кг", cost: 440, recipient: "Сергей Лебедев", dimensions: "38×28×18", attempts: 0, insured: "Да" },
+  { id: "TRK-8809", orderId: "#3202", courier: "DPD", city: "Челябинск", status: "Доставлено", eta: "2026-07-01", weight: "0.9 кг", cost: 310, recipient: "Наталья Козлова", dimensions: "26×16×10", attempts: 2, insured: "Нет" },
+  { id: "TRK-8810", orderId: "#3201", courier: "СДЭК", city: "Ростов-на-Дону", status: "В пути", eta: "2026-07-10", weight: "1.5 кг", cost: 460, recipient: "Павел Егоров", dimensions: "32×22×14", attempts: 1, insured: "Да" },
+  { id: "TRK-8811", orderId: "#3200", courier: "Boxberry", city: "Уфа", status: "Доставлено", eta: "2026-06-30", weight: "1.1 кг", cost: 330, recipient: "Виктория Иванова", dimensions: "29×19×11", attempts: 1, insured: "Нет" },
+  { id: "TRK-8812", orderId: "#3199", courier: "DPD", city: "Красноярск", status: "Ожидает", eta: "2026-07-11", weight: "2.7 кг", cost: 520, recipient: "Максим Соколов", dimensions: "42×32×22", attempts: 0, insured: "Да" },
 ]
 
 export const revenueData = [

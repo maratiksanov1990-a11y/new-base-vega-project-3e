@@ -44,7 +44,7 @@ export function OrdersTable() {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
         <Table containerClassName="flex-1 overflow-auto">
-            <TableHeader className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:border-b [&_th]:border-border [&_th]:bg-card">
+            <TableHeader className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
               <TableRow className="h-14 hover:bg-transparent">
                 <TableHead className="w-12 pl-4">
                   <Checkbox
@@ -60,6 +60,9 @@ export function OrdersTable() {
                 <TableHead>Город</TableHead>
                 <TableHead>Менеджер</TableHead>
                 <TableHead>Способ оплаты</TableHead>
+                <TableHead>Источник</TableHead>
+                <TableHead className="text-center">Скидка</TableHead>
+                <TableHead>Доставка</TableHead>
                 <TableHead className="text-center">Товаров</TableHead>
                 <TableHead>Дата</TableHead>
                 <TableHead className="pr-4 text-right">Сумма</TableHead>
@@ -98,6 +101,11 @@ export function OrdersTable() {
                   <TableCell className="text-foreground">{order.city}</TableCell>
                   <TableCell className="text-foreground">{order.manager}</TableCell>
                   <TableCell className="text-muted-foreground">{order.payment}</TableCell>
+                  <TableCell className="text-foreground">{order.source}</TableCell>
+                  <TableCell className="text-center tabular-nums text-muted-foreground">
+                    {order.discount > 0 ? `${order.discount}%` : "—"}
+                  </TableCell>
+                  <TableCell className="text-foreground">{order.delivery}</TableCell>
                   <TableCell className="text-center tabular-nums text-foreground">{order.items}</TableCell>
                   <TableCell className="text-muted-foreground">
                     {new Date(order.date).toLocaleDateString("ru-RU", {
