@@ -63,7 +63,7 @@ export function OrdersTable() {
             </TableHeader>
             <TableBody>
               {orders.map((order) => (
-                <TableRow key={order.id} data-state={selected.includes(order.id) ? "selected" : undefined}>
+                <TableRow key={order.id} className="h-14" data-state={selected.includes(order.id) ? "selected" : undefined}>
                   <TableCell className="pl-4">
                     <Checkbox
                       checked={selected.includes(order.id)}

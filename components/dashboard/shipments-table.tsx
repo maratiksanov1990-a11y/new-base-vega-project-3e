@@ -56,7 +56,7 @@ export function ShipmentsTable() {
           </TableHeader>
           <TableBody>
             {shipments.map((shipment) => (
-              <TableRow key={shipment.id} data-state={selected.includes(shipment.id) ? "selected" : undefined}>
+              <TableRow key={shipment.id} className="h-14" data-state={selected.includes(shipment.id) ? "selected" : undefined}>
                 <TableCell className="pl-4">
                   <Checkbox
                     checked={selected.includes(shipment.id)}
