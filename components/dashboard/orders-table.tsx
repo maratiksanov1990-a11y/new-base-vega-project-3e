@@ -42,11 +42,10 @@ export function OrdersTable() {
     )
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card">
-      <div className="overflow-x-auto">
-        <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
+        <Table containerClassName="flex-1 overflow-auto">
+            <TableHeader className="[&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card">
+              <TableRow className="h-14 hover:bg-transparent">
                 <TableHead className="w-12 pl-4">
                   <Checkbox
                     checked={allSelected}

@@ -18,8 +18,8 @@ export function Dashboard() {
   return (
     <SidebarProvider>
       <AppSidebar active={active} onSelect={setActive} />
-      <SidebarInset>
-        <header className="sticky top-0 z-50 flex items-center justify-between gap-4 border-b border-border bg-background px-4 py-3 shadow-sm sm:px-6">
+      <SidebarInset className="flex h-svh flex-col overflow-hidden">
+        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 py-3 shadow-sm sm:px-6">
           <div className="flex items-center gap-2">
             <SidebarTrigger />
             <p className="text-sm font-semibold text-foreground">{active}</p>
@@ -30,7 +30,7 @@ export function Dashboard() {
           </Button>
         </header>
 
-        <main className="flex flex-1 flex-col p-6">
+        <main className="flex min-h-0 flex-1 flex-col p-6">
           {active === "Заказы" ? <ShipmentsTable /> : <OrdersTable />}
         </main>
       </SidebarInset>
