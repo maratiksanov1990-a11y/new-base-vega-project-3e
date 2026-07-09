@@ -4,7 +4,6 @@ import { useState } from "react"
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/dashboard/app-sidebar"
 import { OrdersTable } from "@/components/dashboard/orders-table"
@@ -17,13 +16,6 @@ export function Dashboard() {
     <SidebarProvider>
       <AppSidebar active={active} onSelect={setActive} />
       <SidebarInset className="flex h-svh flex-col overflow-hidden">
-        <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
-          <div className="flex items-center gap-2">
-            <SidebarTrigger />
-            <p className="text-sm font-semibold text-foreground">{active}</p>
-          </div>
-        </header>
-
         <main className="flex min-h-0 flex-1 flex-col p-6">
           {active === "Заказы" ? <ShipmentsTable /> : <OrdersTable />}
         </main>
