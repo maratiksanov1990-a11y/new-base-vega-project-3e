@@ -24,6 +24,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 const navItems = [
@@ -47,9 +48,12 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <LayoutDashboard className="size-5" />
           </span>
-          <div className="leading-tight group-data-[collapsible=icon]:hidden">
-            <p className="text-sm font-semibold text-sidebar-foreground">Аналитика</p>
-            <p className="text-xs text-muted-foreground">Панель управления</p>
+          <div className="flex flex-1 items-center justify-between leading-tight group-data-[collapsible=icon]:hidden">
+            <div>
+              <p className="text-sm font-semibold text-sidebar-foreground">Аналитика</p>
+              <p className="text-xs text-muted-foreground">Панель управления</p>
+            </div>
+            <SidebarTrigger className="-mr-1" />
           </div>
         </div>
       </SidebarHeader>
