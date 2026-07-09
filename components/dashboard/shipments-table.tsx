@@ -38,7 +38,7 @@ export function ShipmentsTable() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
-        <div className="flex h-[84px] shrink-0 items-center justify-between gap-4 border-b border-border px-4">
+        <div className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border px-4">
           <Button>
             <Plus className="size-4" />
             Новая доставка
