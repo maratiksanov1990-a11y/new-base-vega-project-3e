@@ -1,8 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import {
   SidebarInset,
   SidebarProvider,
@@ -24,10 +22,6 @@ export function Dashboard() {
             <SidebarTrigger />
             <p className="text-sm font-semibold text-foreground">{active}</p>
           </div>
-          <Button>
-            <Plus className="size-4" />
-            {active === "Заказы" ? "Новая доставка" : "Новый заказ"}
-          </Button>
         </header>
 
         <main className="flex min-h-0 flex-1 flex-col p-6">
