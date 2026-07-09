@@ -11,9 +11,6 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Plus, Search } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { shipments, type ShipmentStatus } from "@/lib/dashboard-data"
@@ -38,21 +35,6 @@ export function ShipmentsTable() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
-        <div className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border px-4">
-          <Button>
-            <Plus className="size-4" />
-            Новая доставка
-          </Button>
-          <div className="relative w-full max-w-xs">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Поиск доставок…"
-              className="pl-9"
-              aria-label="Поиск доставок"
-            />
-          </div>
-        </div>
         <Table containerClassName="flex-1 overflow-auto">
           <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
             <TableRow className="h-14 hover:bg-transparent">
