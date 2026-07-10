@@ -54,14 +54,15 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   // После открытия ховером даём время анимации завершиться перед проверкой правой половины
   const mouseMoveActiveRef = React.useRef(false)
 
-  const HOVER_ZONE = 100 // px от левого края страницы
+  const OPEN_ZONE  = 71  // px — открывать при входе курсора в эту зону
+  const CLOSE_ZONE = 100 // px — закрывать когда курсор уходит правее этой зоны
 
   // Вся логика открытия/закрытия через document mousemove
   React.useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
       if (pinnedRef.current) return
 
-      if (e.clientX <= HOVER_ZONE) {
+      if (e.clientX <= OPEN_ZONE) {
         // Курсор в зоне открытия
         if (!hoverOpenedRef.current) {
           hoverOpenedRef.current = true
@@ -69,14 +70,15 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
           setOpen(true)
           setTimeout(() => { mouseMoveActiveRef.current = true }, 70)
         }
-      } else {
-        // Курсор за пределами зоны — закрываем
+      } else if (e.clientX > CLOSE_ZONE) {
+        // Курсор вышел за зону закрытия
         if (hoverOpenedRef.current && mouseMoveActiveRef.current) {
           hoverOpenedRef.current = false
           mouseMoveActiveRef.current = false
           setOpen(false)
         }
       }
+      // Между OPEN_ZONE и CLOSE_ZONE — ничего не делаем (гистерезис)
     }
     document.addEventListener("mousemove", onMouseMove)
     return () => document.removeEventListener("mousemove", onMouseMove)
