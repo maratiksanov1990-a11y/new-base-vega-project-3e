@@ -138,7 +138,7 @@ function SidebarHeaderContent() {
         <LayoutDashboard className="size-4" />
       </span>
       <p
-        className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-100 ease-linear"
+        className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-75 ease-linear"
         style={{ opacity: isCollapsed ? 0 : 1, maxWidth: isCollapsed ? 0 : undefined }}
       >
         Airin

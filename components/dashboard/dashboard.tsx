@@ -24,7 +24,7 @@ export function Dashboard() {
     <SidebarProvider defaultOpen={false}>
       <AppSidebar active={active} onSelect={setActive} onPinChange={setPinned} />
       <SidebarInset
-        className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-100 ease-linear"
+        className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-75 ease-linear"
         style={{
           marginLeft: pinned ? "var(--sidebar-width)" : 0,
           paddingLeft: pinned ? 0 : "var(--sidebar-width-icon)",
