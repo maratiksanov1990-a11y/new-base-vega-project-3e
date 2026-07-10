@@ -40,9 +40,10 @@ const navItems = [
 type AppSidebarProps = {
   active: string
   onSelect: (title: string) => void
+  onPinChange?: (pinned: boolean) => void
 }
 
-export function AppSidebar({ active, onSelect }: AppSidebarProps) {
+export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   const { state, setOpen } = useSidebar()
   const [pinned, setPinned] = React.useState(false)
   const hoverOpenedRef = React.useRef(false)
@@ -64,17 +65,16 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   const handlePin = React.useCallback(() => {
     setPinned((prev) => {
       const next = !prev
+      onPinChange?.(next)
       if (next) {
-        // Фиксируем — оставляем открытым
         hoverOpenedRef.current = false
         setOpen(true)
       } else {
-        // Отфиксируем — сворачиваем
         setOpen(false)
       }
       return next
     })
-  }, [setOpen])
+  }, [setOpen, onPinChange])
 
   return (
     <Sidebar collapsible="icon" className="z-20" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>

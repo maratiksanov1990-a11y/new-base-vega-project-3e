@@ -14,6 +14,7 @@ import { ShipmentsTable } from "@/components/dashboard/shipments-table"
 
 export function Dashboard() {
   const [active, setActive] = useState("Обзор")
+  const [pinned, setPinned] = useState(false)
 
   const isOrders = active === "Заказы"
   const buttonLabel = isOrders ? "Новая доставка" : "Новый заказ"
@@ -21,8 +22,11 @@ export function Dashboard() {
 
   return (
     <SidebarProvider defaultOpen={false}>
-      <AppSidebar active={active} onSelect={setActive} />
-      <SidebarInset className="flex h-svh w-full flex-col overflow-hidden">
+      <AppSidebar active={active} onSelect={setActive} onPinChange={setPinned} />
+      <SidebarInset
+        className="flex h-svh flex-col overflow-hidden transition-[margin-left] duration-100 ease-linear"
+        style={{ marginLeft: pinned ? "var(--sidebar-width)" : 0 }}
+      >
         <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
           <Button size="sm" className="h-8">
             <Plus className="size-4" />
