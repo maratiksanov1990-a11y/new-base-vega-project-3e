@@ -7,10 +7,28 @@ import { Input } from "@/components/ui/input"
 import {
   SidebarInset,
   SidebarProvider,
+  SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/dashboard/app-sidebar"
 import { OrdersTable } from "@/components/dashboard/orders-table"
 import { ShipmentsTable } from "@/components/dashboard/shipments-table"
+
+function FloatingSidebarTrigger() {
+  const { state, width, isMobile } = useSidebar()
+  const sidebarW = state === "expanded" ? `var(--sidebar-width)` : `var(--sidebar-width-icon)`
+
+  if (isMobile) return null
+
+  return (
+    <div
+      className="fixed top-[calc(50%-16px)] z-20 transition-[left] duration-150 ease-linear"
+      style={{ left: `calc(${sidebarW} - 12px)` }}
+    >
+      <SidebarTrigger className="flex h-8 w-6 items-center justify-center rounded-md border border-border bg-background shadow-sm hover:bg-accent" />
+    </div>
+  )
+}
 
 export function Dashboard() {
   const [active, setActive] = useState("Обзор")
@@ -22,6 +40,7 @@ export function Dashboard() {
   return (
     <SidebarProvider>
       <AppSidebar active={active} onSelect={setActive} />
+      <FloatingSidebarTrigger />
       <SidebarInset className="flex h-svh flex-col overflow-hidden">
         <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
           <Button size="sm" className="h-8">
