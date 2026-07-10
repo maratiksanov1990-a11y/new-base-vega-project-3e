@@ -43,8 +43,8 @@ type AppSidebarProps = {
 export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="h-12">
-        <div className="flex items-center gap-3 px-1">
+      <SidebarHeader className="h-12 group-data-[collapsible=icon]:h-12">
+        <div className="flex h-full items-center gap-3 px-1">
           {/* Иконка логотипа — скрывается при свёрнутом сайдбаре */}
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground group-data-[collapsible=icon]:hidden">
             <LayoutDashboard className="size-5" />
