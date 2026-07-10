@@ -13,6 +13,8 @@ import {
   Sun,
   PanelLeftClose,
   PanelLeftOpen,
+  PinOff,
+  Check,
 } from "lucide-react"
 
 import {
@@ -37,49 +39,67 @@ const navItems = [
   { title: "Аналитика", icon: BarChart3 },
 ]
 
+// Три режима панели
+// hover      — свёрнута, раскрывается при наведении (по умолчанию)
+// pinned     — закреплена открытой, контент сдвигается
+// pinned-collapsed — закреплена свёрнутой (только иконки), контент сдвигается
+export type SidebarMode = "hover" | "pinned" | "pinned-collapsed"
+
 type AppSidebarProps = {
   active: string
   onSelect: (title: string) => void
-  onPinChange?: (pinned: boolean) => void
+  onModeChange?: (mode: SidebarMode) => void
 }
 
-export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
-  const { state, setOpen } = useSidebar()
-  const [pinned, setPinned] = React.useState(false)
+export function AppSidebar({ active, onSelect, onModeChange }: AppSidebarProps) {
+  const { setOpen } = useSidebar()
+  const [mode, setMode] = React.useState<SidebarMode>("hover")
   const hoverOpenedRef = React.useRef(false)
+  const modeRef = React.useRef(mode)
+  React.useEffect(() => { modeRef.current = mode }, [mode])
 
-  const pinnedRef = React.useRef(pinned)
-  React.useEffect(() => { pinnedRef.current = pinned }, [pinned])
-
-  // После открытия ховером даём время анимации завершиться перед проверкой правой половины
   const mouseMoveActiveRef = React.useRef(false)
 
+  const applyMode = React.useCallback((next: SidebarMode) => {
+    setMode(next)
+    modeRef.current = next
+    onModeChange?.(next)
+    if (next === "pinned") {
+      hoverOpenedRef.current = false
+      mouseMoveActiveRef.current = false
+      setOpen(true)
+    } else {
+      // hover и pinned-collapsed — свёрнуты
+      hoverOpenedRef.current = false
+      mouseMoveActiveRef.current = false
+      setOpen(false)
+    }
+  }, [setOpen, onModeChange])
+
   const handleMouseEnter = React.useCallback(() => {
-    if (pinnedRef.current) return
+    if (modeRef.current !== "hover") return
     hoverOpenedRef.current = true
     mouseMoveActiveRef.current = false
     setOpen(true)
-    // Активируем проверку правой половины только после завершения анимации открытия
     setTimeout(() => { mouseMoveActiveRef.current = true }, 70)
   }, [setOpen])
 
   const handleMouseLeave = React.useCallback(() => {
-    if (!pinnedRef.current && hoverOpenedRef.current) {
+    if (modeRef.current !== "hover") return
+    if (hoverOpenedRef.current) {
       hoverOpenedRef.current = false
       mouseMoveActiveRef.current = false
       setOpen(false)
     }
   }, [setOpen])
 
-  // Сворачиваем при заходе курсора на правую половину панели
   React.useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      if (pinnedRef.current || !hoverOpenedRef.current || !mouseMoveActiveRef.current) return
+      if (modeRef.current !== "hover" || !hoverOpenedRef.current || !mouseMoveActiveRef.current) return
       const sidebarEl = document.querySelector("[data-sidebar='sidebar']") as HTMLElement | null
       if (!sidebarEl) return
       const { left, width } = sidebarEl.getBoundingClientRect()
-      const relativeX = e.clientX - left
-      if (relativeX > width / 2) {
+      if (e.clientX - left > width / 2) {
         hoverOpenedRef.current = false
         mouseMoveActiveRef.current = false
         setOpen(false)
@@ -88,20 +108,6 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
     document.addEventListener("mousemove", onMouseMove)
     return () => document.removeEventListener("mousemove", onMouseMove)
   }, [setOpen])
-
-  const handlePin = React.useCallback(() => {
-    setPinned((prev) => {
-      const next = !prev
-      onPinChange?.(next)
-      if (next) {
-        hoverOpenedRef.current = false
-        setOpen(true)
-      } else {
-        setOpen(false)
-      }
-      return next
-    })
-  }, [setOpen, onPinChange])
 
   return (
     <Sidebar collapsible="icon" className="z-20" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -131,15 +137,7 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip={pinned ? "Открепить панель" : "Закрепить панель"}
-              onClick={handlePin}
-            >
-              {pinned ? <PanelLeftClose /> : <PanelLeftOpen />}
-              <span>{pinned ? "Открепить панель" : "Закрепить панель"}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          <SidebarModeButtons mode={mode} onApply={applyMode} />
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Настройки">
               <Settings />
@@ -152,6 +150,53 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
+  )
+}
+
+function SidebarModeButtons({ mode, onApply }: { mode: SidebarMode; onApply: (m: SidebarMode) => void }) {
+  const { state } = useSidebar()
+  const isCollapsed = state === "collapsed"
+
+  const modes: { value: SidebarMode; label: string; icon: React.ElementType }[] = [
+    { value: "hover", label: "С наведением", icon: PanelLeftOpen },
+    { value: "pinned", label: "Закреплённая", icon: PanelLeftClose },
+    { value: "pinned-collapsed", label: "Закреп. свёрнутая", icon: PinOff },
+  ]
+
+  if (isCollapsed) {
+    // В свёрнутом виде — одна кнопка, циклически переключает режим
+    const currentIndex = modes.findIndex(m => m.value === mode)
+    const next = modes[(currentIndex + 1) % modes.length]
+    const CurrentIcon = modes[currentIndex].icon
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          tooltip={`Режим: ${modes[currentIndex].label}`}
+          onClick={() => onApply(next.value)}
+        >
+          <CurrentIcon />
+          <span>Режим панели</span>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    )
+  }
+
+  return (
+    <>
+      {modes.map(({ value, label, icon: Icon }) => (
+        <SidebarMenuItem key={value}>
+          <SidebarMenuButton
+            isActive={mode === value}
+            tooltip={label}
+            onClick={() => onApply(value)}
+          >
+            <Icon />
+            <span>{label}</span>
+            {mode === value && <Check className="ml-auto size-3.5 shrink-0 opacity-60" />}
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </>
   )
 }
 
