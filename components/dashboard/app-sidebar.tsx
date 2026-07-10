@@ -54,35 +54,28 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   // После открытия ховером даём время анимации завершиться перед проверкой правой половины
   const mouseMoveActiveRef = React.useRef(false)
 
-  const handleMouseEnter = React.useCallback(() => {
-    if (pinnedRef.current) return
-    hoverOpenedRef.current = true
-    mouseMoveActiveRef.current = false
-    setOpen(true)
-    // Активируем проверку правой половины только после завершения анимации открытия
-    setTimeout(() => { mouseMoveActiveRef.current = true }, 70)
-  }, [setOpen])
+  const HOVER_ZONE = 71 // px от левого края страницы
 
-  const handleMouseLeave = React.useCallback(() => {
-    if (!pinnedRef.current && hoverOpenedRef.current) {
-      hoverOpenedRef.current = false
-      mouseMoveActiveRef.current = false
-      setOpen(false)
-    }
-  }, [setOpen])
-
-  // Сворачиваем при заходе курсора на правую половину панели
+  // Вся логика открытия/закрытия через document mousemove
   React.useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      if (pinnedRef.current || !hoverOpenedRef.current || !mouseMoveActiveRef.current) return
-      const sidebarEl = document.querySelector("[data-sidebar='sidebar']") as HTMLElement | null
-      if (!sidebarEl) return
-      const { left, width } = sidebarEl.getBoundingClientRect()
-      const relativeX = e.clientX - left
-      if (relativeX > width / 2) {
-        hoverOpenedRef.current = false
-        mouseMoveActiveRef.current = false
-        setOpen(false)
+      if (pinnedRef.current) return
+
+      if (e.clientX <= HOVER_ZONE) {
+        // Курсор в зоне открытия
+        if (!hoverOpenedRef.current) {
+          hoverOpenedRef.current = true
+          mouseMoveActiveRef.current = false
+          setOpen(true)
+          setTimeout(() => { mouseMoveActiveRef.current = true }, 70)
+        }
+      } else {
+        // Курсор за пределами зоны — закрываем
+        if (hoverOpenedRef.current && mouseMoveActiveRef.current) {
+          hoverOpenedRef.current = false
+          mouseMoveActiveRef.current = false
+          setOpen(false)
+        }
       }
     }
     document.addEventListener("mousemove", onMouseMove)
@@ -104,7 +97,7 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   }, [setOpen, onPinChange])
 
   return (
-    <Sidebar collapsible="icon" className="z-20" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <Sidebar collapsible="icon" className="z-20">
       <SidebarHeader className="h-12">
         <SidebarHeaderContent />
       </SidebarHeader>
