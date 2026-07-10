@@ -54,7 +54,7 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   // После открытия ховером даём время анимации завершиться перед проверкой правой половины
   const mouseMoveActiveRef = React.useRef(false)
 
-  const HOVER_ZONE = 71 // px от левого края страницы
+  const HOVER_ZONE = 100 // px от левого края страницы
 
   // Вся логика открытия/закрытия через document mousemove
   React.useEffect(() => {
