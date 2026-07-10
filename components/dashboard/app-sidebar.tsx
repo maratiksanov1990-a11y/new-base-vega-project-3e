@@ -41,13 +41,15 @@ type AppSidebarProps = {
 
 export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   return (
-    <Sidebar collapsible="offcanvas">
+    <Sidebar collapsible="icon">
       <SidebarHeader className="h-12">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <LayoutDashboard className="size-5" />
           </span>
-          <p className="flex-1 truncate text-sm font-semibold text-sidebar-foreground">Airin</p>
+          <p className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-150 ease-linear group-data-[collapsible=icon]:max-w-0 group-data-[collapsible=icon]:opacity-0">
+            Airin
+          </p>
         </div>
       </SidebarHeader>
       <SidebarContent>
