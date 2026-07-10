@@ -54,23 +54,23 @@ function OrdersTableSkeleton() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
-      <Table containerClassName="flex-1 overflow-auto">
+      <Table containerClassName="flex-1 overflow-auto" className="min-w-full">
         <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
           <TableRow className="h-14 hover:bg-transparent">
             <TableHead className="w-12 pl-4"><Skeleton className="h-4 w-4 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-10 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-14 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-12 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-12 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-18 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-24 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
-            <TableHead className="text-center"><Skeleton className="mx-auto h-3.5 w-12 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
-            <TableHead className="text-center"><Skeleton className="mx-auto h-3.5 w-14 rounded" /></TableHead>
-            <TableHead><Skeleton className="h-3.5 w-10 rounded" /></TableHead>
-            <TableHead className="pr-4 text-right"><Skeleton className="ml-auto h-3.5 w-14 rounded" /></TableHead>
+            <TableHead className="min-w-[80px]"><Skeleton className="h-3.5 w-10 rounded" /></TableHead>
+            <TableHead className="min-w-[180px]"><Skeleton className="h-3.5 w-14 rounded" /></TableHead>
+            <TableHead className="min-w-[110px]"><Skeleton className="h-3.5 w-12 rounded" /></TableHead>
+            <TableHead className="min-w-[130px]"><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
+            <TableHead className="min-w-[100px]"><Skeleton className="h-3.5 w-12 rounded" /></TableHead>
+            <TableHead className="min-w-[120px]"><Skeleton className="h-3.5 w-18 rounded" /></TableHead>
+            <TableHead className="min-w-[140px]"><Skeleton className="h-3.5 w-24 rounded" /></TableHead>
+            <TableHead className="min-w-[120px]"><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
+            <TableHead className="min-w-[80px] text-center"><Skeleton className="mx-auto h-3.5 w-12 rounded" /></TableHead>
+            <TableHead className="min-w-[120px]"><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
+            <TableHead className="min-w-[80px] text-center"><Skeleton className="mx-auto h-3.5 w-14 rounded" /></TableHead>
+            <TableHead className="min-w-[90px]"><Skeleton className="h-3.5 w-10 rounded" /></TableHead>
+            <TableHead className="min-w-[110px] pr-4 text-right"><Skeleton className="ml-auto h-3.5 w-14 rounded" /></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
