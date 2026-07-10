@@ -34,15 +34,43 @@ const initials = (name: string) =>
 const SKELETON_ROWS = 10
 
 function OrdersTableSkeleton() {
+  // Точно соответствует колонкам реальной таблицы
+  const cols: { className?: string; widths: string[] }[] = [
+    { className: "w-12 pl-4", widths: ["w-4 h-4"] },
+    { widths: ["w-16"] },
+    { widths: ["w-24", "w-32"] },   // аватар + имя + email — обрабатывается отдельно
+    { widths: ["w-20"] },
+    { widths: ["w-24"] },
+    { widths: ["w-16"] },
+    { widths: ["w-20"] },
+    { widths: ["w-20"] },
+    { widths: ["w-14"] },
+    { widths: ["w-8"] },
+    { widths: ["w-16"] },
+    { widths: ["w-8"] },
+    { widths: ["w-12"] },
+    { className: "pr-4", widths: ["w-20"] },
+  ]
+
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
       <Table containerClassName="flex-1 overflow-auto">
         <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
           <TableRow className="h-14 hover:bg-transparent">
             <TableHead className="w-12 pl-4"><Skeleton className="h-4 w-4 rounded" /></TableHead>
-            {["Заказ","Клиент","Статус","Телефон","Город","Менеджер","Способ оплаты","Источник","Скидка","Доставка","Товаров","Дата","Сумма"].map((h) => (
-              <TableHead key={h}><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
-            ))}
+            <TableHead><Skeleton className="h-3.5 w-10 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-14 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-12 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-12 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-18 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-24 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
+            <TableHead className="text-center"><Skeleton className="mx-auto h-3.5 w-12 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
+            <TableHead className="text-center"><Skeleton className="mx-auto h-3.5 w-14 rounded" /></TableHead>
+            <TableHead><Skeleton className="h-3.5 w-10 rounded" /></TableHead>
+            <TableHead className="pr-4 text-right"><Skeleton className="ml-auto h-3.5 w-14 rounded" /></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -52,7 +80,7 @@ function OrdersTableSkeleton() {
               <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <Skeleton className="size-8 rounded-full" />
+                  <Skeleton className="size-8 shrink-0 rounded-full" />
                   <div className="space-y-1.5">
                     <Skeleton className="h-3.5 w-24 rounded" />
                     <Skeleton className="h-3 w-32 rounded" />
@@ -65,9 +93,9 @@ function OrdersTableSkeleton() {
               <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
               <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
               <TableCell><Skeleton className="h-3.5 w-14 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-8 rounded" /></TableCell>
+              <TableCell className="text-center"><Skeleton className="mx-auto h-3.5 w-8 rounded" /></TableCell>
               <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-8 rounded" /></TableCell>
+              <TableCell className="text-center"><Skeleton className="mx-auto h-3.5 w-6 rounded" /></TableCell>
               <TableCell><Skeleton className="h-3.5 w-12 rounded" /></TableCell>
               <TableCell className="pr-4"><Skeleton className="ml-auto h-3.5 w-20 rounded" /></TableCell>
             </TableRow>
