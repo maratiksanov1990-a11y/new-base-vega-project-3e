@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Table,
   TableBody,
@@ -12,6 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Skeleton } from "@/components/ui/skeleton"
 
 import { cn } from "@/lib/utils"
 import { currency, orders, type OrderStatus } from "@/lib/dashboard-data"
@@ -30,8 +31,63 @@ const initials = (name: string) =>
     .slice(0, 2)
     .join("")
 
+const SKELETON_ROWS = 10
+
+function OrdersTableSkeleton() {
+  return (
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
+      <Table containerClassName="flex-1 overflow-auto">
+        <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
+          <TableRow className="h-14 hover:bg-transparent">
+            <TableHead className="w-12 pl-4"><Skeleton className="h-4 w-4 rounded" /></TableHead>
+            {["Заказ","Клиент","Статус","Телефон","Город","Менеджер","Способ оплаты","Источник","Скидка","Доставка","Товаров","Дата","Сумма"].map((h) => (
+              <TableHead key={h}><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {Array.from({ length: SKELETON_ROWS }).map((_, i) => (
+            <TableRow key={i} className="h-14">
+              <TableCell className="pl-4"><Skeleton className="h-4 w-4 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  <Skeleton className="size-8 rounded-full" />
+                  <div className="space-y-1.5">
+                    <Skeleton className="h-3.5 w-24 rounded" />
+                    <Skeleton className="h-3 w-32 rounded" />
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell><Skeleton className="h-5 w-20 rounded-full" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-24 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-14 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-8 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-8 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-3.5 w-12 rounded" /></TableCell>
+              <TableCell className="pr-4"><Skeleton className="ml-auto h-3.5 w-20 rounded" /></TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
+
 export function OrdersTable() {
+  const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState<string[]>([])
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1500)
+    return () => clearTimeout(t)
+  }, [])
+
+  if (loading) return <OrdersTableSkeleton />
 
   const allSelected = selected.length === orders.length && orders.length > 0
   const toggleAll = (checked: boolean) =>
