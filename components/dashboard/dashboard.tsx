@@ -23,8 +23,8 @@ export function Dashboard() {
     <SidebarProvider>
       <AppSidebar active={active} onSelect={setActive} />
       <SidebarInset className="flex h-svh flex-col overflow-hidden">
-        <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
-          <Button>
+        <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
+          <Button size="sm" className="h-8">
             <Plus className="size-4" />
             {buttonLabel}
           </Button>
@@ -33,7 +33,7 @@ export function Dashboard() {
             <Input
               type="search"
               placeholder={searchPlaceholder}
-              className="pl-9"
+              className="h-8 pl-9"
               aria-label={searchPlaceholder}
             />
           </div>
