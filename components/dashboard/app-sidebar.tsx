@@ -60,7 +60,7 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
     mouseMoveActiveRef.current = false
     setOpen(true)
     // Активируем проверку правой половины только после завершения анимации открытия
-    setTimeout(() => { mouseMoveActiveRef.current = true }, 150)
+    setTimeout(() => { mouseMoveActiveRef.current = true }, 100)
   }, [setOpen])
 
   const handleMouseLeave = React.useCallback(() => {
@@ -161,11 +161,11 @@ function SidebarHeaderContent() {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-[min(var(--radius-md),10px)] bg-primary text-primary-foreground">
         <LayoutDashboard className="size-4" />
       </span>
       <p
-        className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-75 ease-linear"
+        className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-50 ease-linear"
         style={{ opacity: isCollapsed ? 0 : 1, maxWidth: isCollapsed ? 0 : undefined }}
       >
         Airin
