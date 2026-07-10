@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import {
   SidebarInset,
   SidebarProvider,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/dashboard/app-sidebar"
 import { OrdersTable } from "@/components/dashboard/orders-table"
@@ -24,10 +25,13 @@ export function Dashboard() {
       <AppSidebar active={active} onSelect={setActive} />
       <SidebarInset className="flex h-svh flex-col overflow-hidden">
         <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
-          <Button size="sm" className="h-8">
-            <Plus className="size-4" />
-            {buttonLabel}
-          </Button>
+          <div className="flex items-center gap-3">
+            <SidebarTrigger />
+            <Button size="sm" className="h-8">
+              <Plus className="size-4" />
+              {buttonLabel}
+            </Button>
+          </div>
           <div className="relative w-full max-w-xs">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input

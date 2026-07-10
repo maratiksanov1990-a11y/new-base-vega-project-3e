@@ -24,7 +24,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 const navItems = [
@@ -42,19 +41,13 @@ type AppSidebarProps = {
 
 export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="h-12 group-data-[collapsible=icon]:h-12">
-        {/* Развёрнутое состояние: иконка + текст + триггер */}
-        <div className="flex items-center gap-3 transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:hidden group-data-[collapsible=icon]:opacity-0">
+    <Sidebar collapsible="offcanvas">
+      <SidebarHeader className="h-12">
+        <div className="flex items-center gap-3">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <LayoutDashboard className="size-5" />
           </span>
           <p className="flex-1 truncate text-sm font-semibold text-sidebar-foreground">Airin</p>
-          <SidebarTrigger className="shrink-0" />
-        </div>
-        {/* Свёрнутое состояние: только триггер */}
-        <div className="hidden items-center justify-center group-data-[collapsible=icon]:flex">
-          <SidebarTrigger />
         </div>
       </SidebarHeader>
       <SidebarContent>
