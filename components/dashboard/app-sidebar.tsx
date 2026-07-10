@@ -25,6 +25,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 const navItems = [
@@ -44,21 +45,7 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-12">
-        <div className="relative flex items-center gap-2">
-          {/* Иконка логотипа — скрывается при сворачивании */}
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:opacity-0">
-            <LayoutDashboard className="size-5" />
-          </span>
-          {/* Триггер поверх иконки логотипа — появляется при сворачивании */}
-          <div className="absolute left-0 flex size-9 items-center justify-center opacity-0 transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:opacity-100">
-            <SidebarTrigger />
-          </div>
-          {/* Текст + триггер закрытия — скрываются при сворачивании */}
-          <p className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-150 ease-linear group-data-[collapsible=icon]:max-w-0 group-data-[collapsible=icon]:opacity-0">
-            Airin
-          </p>
-          <SidebarTrigger className="shrink-0 transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:opacity-0" />
-        </div>
+        <SidebarHeaderContent />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -95,6 +82,53 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
+  )
+}
+
+function SidebarHeaderContent() {
+  const { state } = useSidebar()
+  const isCollapsed = state === "collapsed"
+
+  // Задержка появления триггера совпадает с анимацией ширины (150ms)
+  const [showTrigger, setShowTrigger] = React.useState(false)
+
+  React.useEffect(() => {
+    if (isCollapsed) {
+      const t = setTimeout(() => setShowTrigger(true), 75)
+      return () => clearTimeout(t)
+    } else {
+      setShowTrigger(false)
+    }
+  }, [isCollapsed])
+
+  return (
+    <div className="relative flex items-center gap-2">
+      {/* Иконка логотипа */}
+      <span
+        className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity duration-150 ease-linear"
+        style={{ opacity: isCollapsed ? 0 : 1 }}
+      >
+        <LayoutDashboard className="size-5" />
+      </span>
+      {/* Триггер поверх иконки — плавно появляется после начала анимации */}
+      <div
+        className="absolute left-0 flex size-9 items-center justify-center transition-opacity duration-150 ease-linear"
+        style={{ opacity: showTrigger ? 1 : 0 }}
+      >
+        <SidebarTrigger />
+      </div>
+      {/* Текст Airin + триггер закрытия */}
+      <p
+        className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-150 ease-linear"
+        style={{ opacity: isCollapsed ? 0 : 1, maxWidth: isCollapsed ? 0 : undefined }}
+      >
+        Airin
+      </p>
+      <SidebarTrigger
+        className="shrink-0 transition-opacity duration-150 ease-linear"
+        style={{ opacity: isCollapsed ? 0 : 1, pointerEvents: isCollapsed ? "none" : undefined }}
+      />
+    </div>
   )
 }
 
