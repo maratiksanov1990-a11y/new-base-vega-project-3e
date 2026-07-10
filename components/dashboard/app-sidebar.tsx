@@ -44,17 +44,18 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-12 group-data-[collapsible=icon]:h-12">
-        <div className="flex h-full items-center gap-3 overflow-hidden px-1">
-          {/* Иконка логотипа — плавно исчезает при свёрнутом сайдбаре */}
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
-            <LayoutDashboard className="size-5" />
-          </span>
-          {/* Триггер — плавно появляется вместо иконки при свёрнутом сайдбаре */}
-          <SidebarTrigger className="pointer-events-none shrink-0 opacity-0 transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:pointer-events-auto group-data-[collapsible=icon]:opacity-100" />
-          {/* Текст и триггер закрытия — плавно исчезают при свёрнутом сайдбаре */}
-          <div className="flex flex-1 items-center justify-between overflow-hidden transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
-            <p className="truncate text-sm font-semibold text-sidebar-foreground">Airin</p>
-            <SidebarTrigger className="-mr-1 shrink-0" />
+        <div className="relative flex h-full items-center px-1">
+          {/* Иконка логотипа + текст + триггер — видны в развёрнутом состоянии */}
+          <div className="flex w-full items-center gap-3 transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <LayoutDashboard className="size-5" />
+            </span>
+            <p className="flex-1 truncate text-sm font-semibold text-sidebar-foreground">Airin</p>
+            <SidebarTrigger className="shrink-0" />
+          </div>
+          {/* Триггер — виден только в свёрнутом состоянии, на месте иконки */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:pointer-events-auto group-data-[collapsible=icon]:opacity-100 pointer-events-none">
+            <SidebarTrigger />
           </div>
         </div>
       </SidebarHeader>
