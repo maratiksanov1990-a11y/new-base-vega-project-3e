@@ -62,6 +62,19 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
     }
   }, [pinned, setOpen])
 
+  const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (pinned || !hoverOpenedRef.current) return
+    // Ищем ближайший элемент с data-sidebar="sidebar" — это внутренняя панель
+    const sidebarEl = (e.currentTarget as HTMLElement).querySelector("[data-sidebar='sidebar']") as HTMLElement | null
+    if (!sidebarEl) return
+    const { left, width } = sidebarEl.getBoundingClientRect()
+    const relativeX = e.clientX - left
+    if (relativeX > width / 2) {
+      hoverOpenedRef.current = false
+      setOpen(false)
+    }
+  }, [pinned, setOpen])
+
   const handlePin = React.useCallback(() => {
     setPinned((prev) => {
       const next = !prev
@@ -77,7 +90,7 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   }, [setOpen, onPinChange])
 
   return (
-    <Sidebar collapsible="icon" className="z-20" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <Sidebar collapsible="icon" className="z-20" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove}>
       <SidebarHeader className="h-12">
         <SidebarHeaderContent />
       </SidebarHeader>
