@@ -77,7 +77,7 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   }, [setOpen])
 
   return (
-    <Sidebar collapsible="icon" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <Sidebar collapsible="icon" className="z-20" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <SidebarHeader className="h-12">
         <SidebarHeaderContent />
       </SidebarHeader>

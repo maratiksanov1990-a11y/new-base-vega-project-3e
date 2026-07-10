@@ -22,7 +22,7 @@ export function Dashboard() {
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar active={active} onSelect={setActive} />
-      <SidebarInset className="flex h-svh flex-col overflow-hidden">
+      <SidebarInset className="flex h-svh w-full flex-col overflow-hidden">
         <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
           <Button size="sm" className="h-8">
             <Plus className="size-4" />
