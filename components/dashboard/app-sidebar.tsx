@@ -46,7 +46,7 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
       <SidebarHeader className="h-12 group-data-[collapsible=icon]:h-12">
         <div className="relative flex h-full items-center px-1">
           {/* Иконка логотипа + текст + триггер — видны в развёрнутом состоянии */}
-          <div className="flex w-full items-center gap-3 transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
+          <div className="flex w-full items-center gap-3 transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <LayoutDashboard className="size-5" />
             </span>
@@ -54,7 +54,7 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
             <SidebarTrigger className="shrink-0" />
           </div>
           {/* Триггер — виден только в свёрнутом состоянии, на месте иконки */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:pointer-events-auto group-data-[collapsible=icon]:opacity-100 pointer-events-none">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:pointer-events-auto group-data-[collapsible=icon]:opacity-100">
             <SidebarTrigger />
           </div>
         </div>
