@@ -24,8 +24,11 @@ export function Dashboard() {
     <SidebarProvider defaultOpen={false}>
       <AppSidebar active={active} onSelect={setActive} onPinChange={setPinned} />
       <SidebarInset
-        className="flex h-svh flex-col overflow-hidden transition-[margin-left] duration-100 ease-linear"
-        style={{ marginLeft: pinned ? "var(--sidebar-width)" : 0 }}
+        className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-100 ease-linear"
+        style={{
+          marginLeft: pinned ? "var(--sidebar-width)" : 0,
+          paddingLeft: pinned ? 0 : "var(--sidebar-width-icon)",
+        }}
       >
         <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
           <Button size="sm" className="h-8">
