@@ -161,7 +161,7 @@ function SidebarHeaderContent() {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-[min(var(--radius-md),10px)] bg-primary text-primary-foreground">
         <LayoutDashboard className="size-4" />
       </span>
       <p
