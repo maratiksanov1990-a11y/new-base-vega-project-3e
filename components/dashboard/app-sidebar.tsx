@@ -99,6 +99,12 @@ export function AppSidebar({ active, onSelect, onModeChange }: AppSidebarProps) 
       if (!sidebarEl) return
       const { left, width } = sidebarEl.getBoundingClientRect()
       if (e.clientX - left > width / 2) {
+        // Не сворачиваем, если курсор над футером сайдбара
+        const footerEl = document.querySelector("[data-sidebar='footer']") as HTMLElement | null
+        if (footerEl) {
+          const fr = footerEl.getBoundingClientRect()
+          if (e.clientY >= fr.top && e.clientY <= fr.bottom) return
+        }
         hoverOpenedRef.current = false
         mouseMoveActiveRef.current = false
         setOpen(false)
