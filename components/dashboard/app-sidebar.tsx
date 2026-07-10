@@ -44,19 +44,17 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-12 group-data-[collapsible=icon]:h-12">
-        <div className="relative flex h-full items-center px-1">
-          {/* Иконка логотипа + текст + триггер — видны в развёрнутом состоянии */}
-          <div className="flex w-full items-center gap-3 transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <LayoutDashboard className="size-5" />
-            </span>
-            <p className="flex-1 truncate text-sm font-semibold text-sidebar-foreground">Airin</p>
-            <SidebarTrigger className="shrink-0" />
-          </div>
-          {/* Триггер — виден только в свёрнутом состоянии, на месте иконки */}
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:pointer-events-auto group-data-[collapsible=icon]:opacity-100">
-            <SidebarTrigger />
-          </div>
+        {/* Развёрнутое состояние: иконка + текст + триггер */}
+        <div className="flex items-center gap-3 transition-opacity duration-150 ease-linear group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:hidden group-data-[collapsible=icon]:opacity-0">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <LayoutDashboard className="size-5" />
+          </span>
+          <p className="flex-1 truncate text-sm font-semibold text-sidebar-foreground">Airin</p>
+          <SidebarTrigger className="shrink-0" />
+        </div>
+        {/* Свёрнутое состояние: только триггер */}
+        <div className="hidden items-center justify-center group-data-[collapsible=icon]:flex">
+          <SidebarTrigger />
         </div>
       </SidebarHeader>
       <SidebarContent>
