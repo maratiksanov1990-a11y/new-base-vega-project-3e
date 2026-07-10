@@ -42,8 +42,25 @@ type AppSidebarProps = {
 }
 
 export function AppSidebar({ active, onSelect }: AppSidebarProps) {
+  const { state, open, setOpen } = useSidebar()
+  const hoverOpenedRef = React.useRef(false)
+
+  const handleMouseEnter = React.useCallback(() => {
+    if (state === "collapsed") {
+      hoverOpenedRef.current = true
+      setOpen(true)
+    }
+  }, [state, setOpen])
+
+  const handleMouseLeave = React.useCallback(() => {
+    if (hoverOpenedRef.current) {
+      hoverOpenedRef.current = false
+      setOpen(false)
+    }
+  }, [setOpen])
+
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <SidebarHeader className="h-12">
         <SidebarHeaderContent />
       </SidebarHeader>
