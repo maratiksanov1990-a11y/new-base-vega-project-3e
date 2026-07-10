@@ -11,6 +11,8 @@ import {
   Settings,
   Moon,
   Sun,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react"
 
 import {
@@ -24,7 +26,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
 
@@ -42,21 +43,37 @@ type AppSidebarProps = {
 }
 
 export function AppSidebar({ active, onSelect }: AppSidebarProps) {
-  const { state, open, setOpen } = useSidebar()
+  const { state, setOpen } = useSidebar()
+  const [pinned, setPinned] = React.useState(false)
   const hoverOpenedRef = React.useRef(false)
 
   const handleMouseEnter = React.useCallback(() => {
-    if (state === "collapsed") {
+    if (!pinned && state === "collapsed") {
       hoverOpenedRef.current = true
       setOpen(true)
     }
-  }, [state, setOpen])
+  }, [pinned, state, setOpen])
 
   const handleMouseLeave = React.useCallback(() => {
-    if (hoverOpenedRef.current) {
+    if (!pinned && hoverOpenedRef.current) {
       hoverOpenedRef.current = false
       setOpen(false)
     }
+  }, [pinned, setOpen])
+
+  const handlePin = React.useCallback(() => {
+    setPinned((prev) => {
+      const next = !prev
+      if (next) {
+        // Фиксируем — оставляем открытым
+        hoverOpenedRef.current = false
+        setOpen(true)
+      } else {
+        // Отфиксируем — сворачиваем
+        setOpen(false)
+      }
+      return next
+    })
   }, [setOpen])
 
   return (
@@ -88,6 +105,15 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip={pinned ? "Открепить панель" : "Закрепить панель"}
+              onClick={handlePin}
+            >
+              {pinned ? <PanelLeftClose /> : <PanelLeftOpen />}
+              <span>{pinned ? "Открепить панель" : "Закрепить панель"}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
             <SidebarMenuButton tooltip="Настройки">
               <Settings />
               <span>Настройки</span>
@@ -106,45 +132,17 @@ function SidebarHeaderContent() {
   const { state } = useSidebar()
   const isCollapsed = state === "collapsed"
 
-  // Задержка появления триггера совпадает с анимацией ширины (100ms)
-  const [showTrigger, setShowTrigger] = React.useState(false)
-
-  React.useEffect(() => {
-    if (isCollapsed) {
-      const t = setTimeout(() => setShowTrigger(true), 50)
-      return () => clearTimeout(t)
-    } else {
-      setShowTrigger(false)
-    }
-  }, [isCollapsed])
-
   return (
-    <div className="relative flex items-center gap-2">
-      {/* Иконка логотипа */}
-      <span
-        className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity duration-100 ease-linear"
-        style={{ opacity: isCollapsed ? 0 : 1 }}
-      >
+    <div className="flex items-center gap-2">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
         <LayoutDashboard className="size-5" />
       </span>
-      {/* Триггер поверх иконки — плавно появляется после начала анимации */}
-      <div
-        className="absolute left-0 flex size-9 items-center justify-center transition-opacity duration-100 ease-linear"
-        style={{ opacity: showTrigger ? 1 : 0 }}
-      >
-        <SidebarTrigger />
-      </div>
-      {/* Текст Airin + триггер закрытия */}
       <p
         className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-100 ease-linear"
         style={{ opacity: isCollapsed ? 0 : 1, maxWidth: isCollapsed ? 0 : undefined }}
       >
         Airin
       </p>
-      <SidebarTrigger
-        className="shrink-0 transition-opacity duration-100 ease-linear"
-        style={{ opacity: isCollapsed ? 0 : 1, pointerEvents: isCollapsed ? "none" : undefined }}
-      />
     </div>
   )
 }
