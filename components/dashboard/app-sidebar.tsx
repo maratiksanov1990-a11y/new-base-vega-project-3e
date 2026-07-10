@@ -51,16 +51,22 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   const pinnedRef = React.useRef(pinned)
   React.useEffect(() => { pinnedRef.current = pinned }, [pinned])
 
+  // После открытия ховером даём время анимации завершиться перед проверкой правой половины
+  const mouseMoveActiveRef = React.useRef(false)
+
   const handleMouseEnter = React.useCallback(() => {
-    if (!pinnedRef.current) {
-      hoverOpenedRef.current = true
-      setOpen(true)
-    }
+    if (pinnedRef.current) return
+    hoverOpenedRef.current = true
+    mouseMoveActiveRef.current = false
+    setOpen(true)
+    // Активируем проверку правой половины только после завершения анимации открытия
+    setTimeout(() => { mouseMoveActiveRef.current = true }, 150)
   }, [setOpen])
 
   const handleMouseLeave = React.useCallback(() => {
     if (!pinnedRef.current && hoverOpenedRef.current) {
       hoverOpenedRef.current = false
+      mouseMoveActiveRef.current = false
       setOpen(false)
     }
   }, [setOpen])
@@ -68,13 +74,14 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   // Сворачиваем при заходе курсора на правую половину панели
   React.useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      if (pinnedRef.current || !hoverOpenedRef.current) return
+      if (pinnedRef.current || !hoverOpenedRef.current || !mouseMoveActiveRef.current) return
       const sidebarEl = document.querySelector("[data-sidebar='sidebar']") as HTMLElement | null
       if (!sidebarEl) return
       const { left, width } = sidebarEl.getBoundingClientRect()
       const relativeX = e.clientX - left
       if (relativeX > width / 2) {
         hoverOpenedRef.current = false
+        mouseMoveActiveRef.current = false
         setOpen(false)
       }
     }
