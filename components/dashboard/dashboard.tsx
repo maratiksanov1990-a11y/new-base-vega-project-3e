@@ -20,7 +20,7 @@ export function Dashboard() {
   const searchPlaceholder = isOrders ? "Поиск доставок…" : "Поиск заказов…"
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar active={active} onSelect={setActive} />
       <SidebarInset className="flex h-svh flex-col overflow-hidden">
         <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
