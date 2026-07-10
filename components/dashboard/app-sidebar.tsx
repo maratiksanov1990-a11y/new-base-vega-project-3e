@@ -134,8 +134,8 @@ function SidebarHeaderContent() {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <LayoutDashboard className="size-5" />
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+        <LayoutDashboard className="size-4" />
       </span>
       <p
         className="flex-1 overflow-hidden truncate text-sm font-semibold text-sidebar-foreground transition-[max-width,opacity] duration-100 ease-linear"
