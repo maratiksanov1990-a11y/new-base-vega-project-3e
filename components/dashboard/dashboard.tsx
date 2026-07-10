@@ -8,30 +8,27 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
-import { AppSidebar, type SidebarMode } from "@/components/dashboard/app-sidebar"
+import { AppSidebar } from "@/components/dashboard/app-sidebar"
 import { OrdersTable } from "@/components/dashboard/orders-table"
 import { ShipmentsTable } from "@/components/dashboard/shipments-table"
 
 export function Dashboard() {
   const [active, setActive] = useState("Обзор")
-  const [mode, setMode] = useState<SidebarMode>("hover")
+  const [pinned, setPinned] = useState(false)
 
   const isOrders = active === "Заказы"
   const buttonLabel = isOrders ? "Новая доставка" : "Новый заказ"
   const searchPlaceholder = isOrders ? "Поиск доставок…" : "Поиск заказов…"
 
-  // hover           → overlay, отступ = ширина иконок
-  // pinned          → контент сдвигается на полную ширину сайдбара
-  // pinned-collapsed → контент сдвигается на ширину иконок
-  const marginLeft = mode === "pinned" ? "var(--sidebar-width)" : mode === "pinned-collapsed" ? "var(--sidebar-width-icon)" : 0
-  const paddingLeft = mode === "hover" ? "var(--sidebar-width-icon)" : 0
-
   return (
     <SidebarProvider defaultOpen={false}>
-      <AppSidebar active={active} onSelect={setActive} onModeChange={setMode} />
+      <AppSidebar active={active} onSelect={setActive} onPinChange={setPinned} />
       <SidebarInset
-        className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-[35ms] ease-out"
-        style={{ marginLeft, paddingLeft }}
+        className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-75 ease-linear"
+        style={{
+          marginLeft: pinned ? "var(--sidebar-width)" : 0,
+          paddingLeft: pinned ? 0 : "var(--sidebar-width-icon)",
+        }}
       >
         <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
           <Button size="sm" className="h-8">
