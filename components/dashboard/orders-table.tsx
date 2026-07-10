@@ -54,7 +54,7 @@ function OrdersTableSkeleton() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
-      <Table containerClassName="flex-1 overflow-auto" className="min-w-full">
+      <Table containerClassName="flex h-full flex-col overflow-auto" className="min-w-full">
         <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
           <TableRow className="h-14 hover:bg-transparent">
             <TableHead className="w-12 pl-4"><Skeleton className="h-4 w-4 rounded" /></TableHead>
@@ -73,7 +73,7 @@ function OrdersTableSkeleton() {
             <TableHead className="min-w-[110px] pr-4 text-right"><Skeleton className="ml-auto h-3.5 w-14 rounded" /></TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody className="flex-1">
           {Array.from({ length: SKELETON_ROWS }).map((_, i) => (
             <TableRow key={i} className="h-14">
               <TableCell className="pl-4"><Skeleton className="h-4 w-4 rounded" /></TableCell>
@@ -100,6 +100,8 @@ function OrdersTableSkeleton() {
               <TableCell className="pr-4"><Skeleton className="ml-auto h-3.5 w-20 rounded" /></TableCell>
             </TableRow>
           ))}
+          {/* Растягивающаяся строка заполняет оставшееся пространство */}
+          <TableRow className="h-auto flex-1 hover:bg-transparent" />
         </TableBody>
       </Table>
     </div>
