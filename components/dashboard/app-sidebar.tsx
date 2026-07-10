@@ -14,7 +14,6 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   PinOff,
-  Check,
 } from "lucide-react"
 
 import {
@@ -158,13 +157,12 @@ function SidebarModeButtons({ mode, onApply }: { mode: SidebarMode; onApply: (m:
   const isCollapsed = state === "collapsed"
 
   const modes: { value: SidebarMode; label: string; icon: React.ElementType }[] = [
-    { value: "hover", label: "С наведением", icon: PanelLeftOpen },
-    { value: "pinned", label: "Закреплённая", icon: PanelLeftClose },
-    { value: "pinned-collapsed", label: "Закреп. свёрнутая", icon: PinOff },
+    { value: "hover",           label: "С наведением",     icon: PanelLeftOpen  },
+    { value: "pinned",          label: "Закреплённая",      icon: PanelLeftClose },
+    { value: "pinned-collapsed",label: "Свёрнутая",         icon: PinOff         },
   ]
 
   if (isCollapsed) {
-    // В свёрнутом виде — одна кнопка, циклически переключает режим
     const currentIndex = modes.findIndex(m => m.value === mode)
     const next = modes[(currentIndex + 1) % modes.length]
     const CurrentIcon = modes[currentIndex].icon
@@ -182,21 +180,27 @@ function SidebarModeButtons({ mode, onApply }: { mode: SidebarMode; onApply: (m:
   }
 
   return (
-    <>
-      {modes.map(({ value, label, icon: Icon }) => (
-        <SidebarMenuItem key={value}>
-          <SidebarMenuButton
-            isActive={mode === value}
-            tooltip={label}
-            onClick={() => onApply(value)}
-          >
-            <Icon />
-            <span>{label}</span>
-            {mode === value && <Check className="ml-auto size-3.5 shrink-0 opacity-60" />}
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      ))}
-    </>
+    <SidebarMenuItem>
+      <div className="flex w-full items-center gap-1 rounded-md px-2 py-1">
+        <span className="mr-auto truncate text-xs text-sidebar-foreground/60">Панель</span>
+        <div className="flex items-center gap-0.5">
+          {modes.map(({ value, label, icon: Icon }) => (
+            <button
+              key={value}
+              title={label}
+              onClick={() => onApply(value)}
+              className={`flex size-7 items-center justify-center rounded-md transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground ${
+                mode === value
+                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                  : "text-sidebar-foreground/60"
+              }`}
+            >
+              <Icon className="size-4" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </SidebarMenuItem>
   )
 }
 
