@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import {
   Table,
   TableBody,
@@ -31,30 +31,58 @@ const initials = (name: string) =>
     .slice(0, 2)
     .join("")
 
-const SKELETON_ROWS = 10
+const ROW_HEIGHT = 56 // h-14 = 56px
+const HEADER_HEIGHT = 56
+
+function SkeletonRow() {
+  return (
+    <TableRow className="h-14">
+      <TableCell className="pl-4"><Skeleton className="h-4 w-4 rounded" /></TableCell>
+      <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
+      <TableCell>
+        <div className="flex items-center gap-3">
+          <Skeleton className="size-8 shrink-0 rounded-full" />
+          <div className="space-y-1.5">
+            <Skeleton className="h-3.5 w-24 rounded" />
+            <Skeleton className="h-3 w-32 rounded" />
+          </div>
+        </div>
+      </TableCell>
+      <TableCell><Skeleton className="h-5 w-20 rounded-full" /></TableCell>
+      <TableCell><Skeleton className="h-3.5 w-24 rounded" /></TableCell>
+      <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
+      <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
+      <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
+      <TableCell><Skeleton className="h-3.5 w-14 rounded" /></TableCell>
+      <TableCell className="text-center"><Skeleton className="mx-auto h-3.5 w-8 rounded" /></TableCell>
+      <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
+      <TableCell className="text-center"><Skeleton className="mx-auto h-3.5 w-6 rounded" /></TableCell>
+      <TableCell><Skeleton className="h-3.5 w-12 rounded" /></TableCell>
+      <TableCell className="pr-4"><Skeleton className="ml-auto h-3.5 w-20 rounded" /></TableCell>
+    </TableRow>
+  )
+}
 
 function OrdersTableSkeleton() {
-  // Точно соответствует колонкам реальной таблицы
-  const cols: { className?: string; widths: string[] }[] = [
-    { className: "w-12 pl-4", widths: ["w-4 h-4"] },
-    { widths: ["w-16"] },
-    { widths: ["w-24", "w-32"] },   // аватар + имя + email — обрабатывается отдельно
-    { widths: ["w-20"] },
-    { widths: ["w-24"] },
-    { widths: ["w-16"] },
-    { widths: ["w-20"] },
-    { widths: ["w-20"] },
-    { widths: ["w-14"] },
-    { widths: ["w-8"] },
-    { widths: ["w-16"] },
-    { widths: ["w-8"] },
-    { widths: ["w-12"] },
-    { className: "pr-4", widths: ["w-20"] },
-  ]
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [rowCount, setRowCount] = useState(10)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const update = () => {
+      const availableHeight = el.clientHeight - HEADER_HEIGHT
+      setRowCount(Math.max(1, Math.floor(availableHeight / ROW_HEIGHT)))
+    }
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
-      <Table containerClassName="flex h-full flex-col overflow-auto" className="min-w-full">
+    <div ref={containerRef} className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
+      <Table containerClassName="flex-1 overflow-hidden" className="min-w-full">
         <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
           <TableRow className="h-14 hover:bg-transparent">
             <TableHead className="w-12 pl-4"><Skeleton className="h-4 w-4 rounded" /></TableHead>
@@ -73,35 +101,10 @@ function OrdersTableSkeleton() {
             <TableHead className="min-w-[110px] pr-4 text-right"><Skeleton className="ml-auto h-3.5 w-14 rounded" /></TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="flex-1">
-          {Array.from({ length: SKELETON_ROWS }).map((_, i) => (
-            <TableRow key={i} className="h-14">
-              <TableCell className="pl-4"><Skeleton className="h-4 w-4 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <Skeleton className="size-8 shrink-0 rounded-full" />
-                  <div className="space-y-1.5">
-                    <Skeleton className="h-3.5 w-24 rounded" />
-                    <Skeleton className="h-3 w-32 rounded" />
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell><Skeleton className="h-5 w-20 rounded-full" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-24 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-14 rounded" /></TableCell>
-              <TableCell className="text-center"><Skeleton className="mx-auto h-3.5 w-8 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
-              <TableCell className="text-center"><Skeleton className="mx-auto h-3.5 w-6 rounded" /></TableCell>
-              <TableCell><Skeleton className="h-3.5 w-12 rounded" /></TableCell>
-              <TableCell className="pr-4"><Skeleton className="ml-auto h-3.5 w-20 rounded" /></TableCell>
-            </TableRow>
+        <TableBody>
+          {Array.from({ length: rowCount }).map((_, i) => (
+            <SkeletonRow key={i} />
           ))}
-          {/* Растягивающаяся строка заполняет оставшееся пространство */}
-          <TableRow className="h-auto flex-1 hover:bg-transparent" />
         </TableBody>
       </Table>
     </div>
