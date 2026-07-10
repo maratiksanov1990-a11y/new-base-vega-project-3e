@@ -34,35 +34,6 @@ const initials = (name: string) =>
 const ROW_HEIGHT = 56 // h-14 = 56px
 const HEADER_HEIGHT = 56
 
-function SkeletonRow() {
-  return (
-    <TableRow className="h-14">
-      <TableCell className="pl-4"><Skeleton className="h-4 w-4 rounded" /></TableCell>
-      <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
-      <TableCell>
-        <div className="flex items-center gap-3">
-          <Skeleton className="size-8 shrink-0 rounded-full" />
-          <div className="space-y-1.5">
-            <Skeleton className="h-3.5 w-24 rounded" />
-            <Skeleton className="h-3 w-32 rounded" />
-          </div>
-        </div>
-      </TableCell>
-      <TableCell><Skeleton className="h-5 w-20 rounded-full" /></TableCell>
-      <TableCell><Skeleton className="h-3.5 w-24 rounded" /></TableCell>
-      <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
-      <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
-      <TableCell><Skeleton className="h-3.5 w-20 rounded" /></TableCell>
-      <TableCell><Skeleton className="h-3.5 w-14 rounded" /></TableCell>
-      <TableCell className="text-center"><Skeleton className="mx-auto h-3.5 w-8 rounded" /></TableCell>
-      <TableCell><Skeleton className="h-3.5 w-16 rounded" /></TableCell>
-      <TableCell className="text-center"><Skeleton className="mx-auto h-3.5 w-6 rounded" /></TableCell>
-      <TableCell><Skeleton className="h-3.5 w-12 rounded" /></TableCell>
-      <TableCell className="pr-4"><Skeleton className="ml-auto h-3.5 w-20 rounded" /></TableCell>
-    </TableRow>
-  )
-}
-
 function OrdersTableSkeleton() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [rowCount, setRowCount] = useState(10)
@@ -71,8 +42,8 @@ function OrdersTableSkeleton() {
     const el = containerRef.current
     if (!el) return
     const update = () => {
-      const availableHeight = el.clientHeight - HEADER_HEIGHT
-      setRowCount(Math.max(1, Math.floor(availableHeight / ROW_HEIGHT)))
+      const available = el.clientHeight - HEADER_HEIGHT
+      setRowCount(Math.max(1, Math.ceil(available / ROW_HEIGHT)))
     }
     update()
     const ro = new ResizeObserver(update)
@@ -82,31 +53,50 @@ function OrdersTableSkeleton() {
 
   return (
     <div ref={containerRef} className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card">
-      <Table containerClassName="flex-1 overflow-hidden" className="min-w-full">
-        <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
-          <TableRow className="h-14 hover:bg-transparent">
-            <TableHead className="w-12 pl-4"><Skeleton className="h-4 w-4 rounded" /></TableHead>
-            <TableHead className="min-w-[80px]"><Skeleton className="h-3.5 w-10 rounded" /></TableHead>
-            <TableHead className="min-w-[180px]"><Skeleton className="h-3.5 w-14 rounded" /></TableHead>
-            <TableHead className="min-w-[110px]"><Skeleton className="h-3.5 w-12 rounded" /></TableHead>
-            <TableHead className="min-w-[130px]"><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
-            <TableHead className="min-w-[100px]"><Skeleton className="h-3.5 w-12 rounded" /></TableHead>
-            <TableHead className="min-w-[120px]"><Skeleton className="h-3.5 w-18 rounded" /></TableHead>
-            <TableHead className="min-w-[140px]"><Skeleton className="h-3.5 w-24 rounded" /></TableHead>
-            <TableHead className="min-w-[120px]"><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
-            <TableHead className="min-w-[80px] text-center"><Skeleton className="mx-auto h-3.5 w-12 rounded" /></TableHead>
-            <TableHead className="min-w-[120px]"><Skeleton className="h-3.5 w-16 rounded" /></TableHead>
-            <TableHead className="min-w-[80px] text-center"><Skeleton className="mx-auto h-3.5 w-14 rounded" /></TableHead>
-            <TableHead className="min-w-[90px]"><Skeleton className="h-3.5 w-10 rounded" /></TableHead>
-            <TableHead className="min-w-[110px] pr-4 text-right"><Skeleton className="ml-auto h-3.5 w-14 rounded" /></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Array.from({ length: rowCount }).map((_, i) => (
-            <SkeletonRow key={i} />
-          ))}
-        </TableBody>
-      </Table>
+      {/* Шапка */}
+      <div className="flex h-14 shrink-0 items-center border-b border-border bg-card px-2">
+        <div className="flex w-12 items-center pl-2"><Skeleton className="h-4 w-4 rounded" /></div>
+        <div className="flex min-w-[80px] items-center px-2"><Skeleton className="h-3.5 w-10 rounded" /></div>
+        <div className="flex min-w-[180px] items-center px-2"><Skeleton className="h-3.5 w-14 rounded" /></div>
+        <div className="flex min-w-[110px] items-center px-2"><Skeleton className="h-3.5 w-12 rounded" /></div>
+        <div className="flex min-w-[130px] items-center px-2"><Skeleton className="h-3.5 w-16 rounded" /></div>
+        <div className="flex min-w-[100px] items-center px-2"><Skeleton className="h-3.5 w-12 rounded" /></div>
+        <div className="flex min-w-[120px] items-center px-2"><Skeleton className="h-3.5 w-16 rounded" /></div>
+        <div className="flex min-w-[140px] items-center px-2"><Skeleton className="h-3.5 w-24 rounded" /></div>
+        <div className="flex min-w-[120px] items-center px-2"><Skeleton className="h-3.5 w-16 rounded" /></div>
+        <div className="flex min-w-[80px] items-center justify-center px-2"><Skeleton className="h-3.5 w-12 rounded" /></div>
+        <div className="flex min-w-[120px] items-center px-2"><Skeleton className="h-3.5 w-16 rounded" /></div>
+        <div className="flex min-w-[80px] items-center justify-center px-2"><Skeleton className="h-3.5 w-14 rounded" /></div>
+        <div className="flex min-w-[90px] items-center px-2"><Skeleton className="h-3.5 w-10 rounded" /></div>
+        <div className="flex flex-1 items-center justify-end pr-4"><Skeleton className="h-3.5 w-14 rounded" /></div>
+      </div>
+      {/* Строки */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {Array.from({ length: rowCount }).map((_, i) => (
+          <div key={i} className="flex h-14 shrink-0 items-center border-b border-border px-2 last:border-0">
+            <div className="flex w-12 items-center pl-2"><Skeleton className="h-4 w-4 rounded" /></div>
+            <div className="flex min-w-[80px] items-center px-2"><Skeleton className="h-3.5 w-16 rounded" /></div>
+            <div className="flex min-w-[180px] items-center gap-3 px-2">
+              <Skeleton className="size-8 shrink-0 rounded-full" />
+              <div className="space-y-1.5">
+                <Skeleton className="h-3.5 w-24 rounded" />
+                <Skeleton className="h-3 w-32 rounded" />
+              </div>
+            </div>
+            <div className="flex min-w-[110px] items-center px-2"><Skeleton className="h-5 w-20 rounded-full" /></div>
+            <div className="flex min-w-[130px] items-center px-2"><Skeleton className="h-3.5 w-24 rounded" /></div>
+            <div className="flex min-w-[100px] items-center px-2"><Skeleton className="h-3.5 w-16 rounded" /></div>
+            <div className="flex min-w-[120px] items-center px-2"><Skeleton className="h-3.5 w-20 rounded" /></div>
+            <div className="flex min-w-[140px] items-center px-2"><Skeleton className="h-3.5 w-20 rounded" /></div>
+            <div className="flex min-w-[120px] items-center px-2"><Skeleton className="h-3.5 w-14 rounded" /></div>
+            <div className="flex min-w-[80px] items-center justify-center px-2"><Skeleton className="h-3.5 w-8 rounded" /></div>
+            <div className="flex min-w-[120px] items-center px-2"><Skeleton className="h-3.5 w-16 rounded" /></div>
+            <div className="flex min-w-[80px] items-center justify-center px-2"><Skeleton className="h-3.5 w-6 rounded" /></div>
+            <div className="flex min-w-[90px] items-center px-2"><Skeleton className="h-3.5 w-12 rounded" /></div>
+            <div className="flex flex-1 items-center justify-end pr-4"><Skeleton className="h-3.5 w-20 rounded" /></div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
