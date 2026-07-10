@@ -45,14 +45,14 @@ export function AppSidebar({ active, onSelect }: AppSidebarProps) {
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-12 group-data-[collapsible=icon]:h-12">
         <div className="flex h-full items-center gap-3 px-1">
-          {/* Иконка логотипа — плавно скрывается при свёрнутом сайдбаре */}
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity duration-200 group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
+          {/* Иконка логотипа — скрывается при свёрнутом сайдбаре */}
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground group-data-[collapsible=icon]:hidden">
             <LayoutDashboard className="size-5" />
           </span>
           {/* Триггер вместо иконки при свёрнутом сайдбаре */}
-          <SidebarTrigger className="absolute opacity-0 transition-opacity duration-200 group-data-[collapsible=icon]:relative group-data-[collapsible=icon]:opacity-100" />
-          {/* Текст и триггер закрытия — плавно скрываются при свёрнутом сайдбаре */}
-          <div className="flex flex-1 items-center justify-between overflow-hidden transition-opacity duration-200 group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
+          <SidebarTrigger className="hidden group-data-[collapsible=icon]:flex" />
+          {/* Текст и триггер закрытия — скрываются при свёрнутом сайдбаре */}
+          <div className="flex flex-1 items-center justify-between group-data-[collapsible=icon]:hidden">
             <p className="text-sm font-semibold text-sidebar-foreground">Airin</p>
             <SidebarTrigger className="-mr-1" />
           </div>
