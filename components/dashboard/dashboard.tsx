@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { Plus, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,9 +33,7 @@ const sectionConfig: Record<Section, {
 
 export function Dashboard() {
   const [active, setActive] = useState<Section>("Обзор")
-  const [pinned, setPinned] = useState(false)
-  const promptsAddRef = useRef<HTMLButtonElement>(null)
-  const apiKeysAddRef = useRef<HTMLButtonElement>(null)
+  const [mode, setMode] = useState<"hover" | "pinned" | "pinned-collapsed">("hover")
 
   const cfg = sectionConfig[active] ?? sectionConfig["Обзор"]
 
@@ -49,12 +47,12 @@ export function Dashboard() {
 
   return (
     <SidebarProvider defaultOpen={false}>
-      <AppSidebar active={active} onSelect={(s) => setActive(s as Section)} onPinChange={setPinned} />
+      <AppSidebar active={active} onSelect={(s) => setActive(s as Section)} onModeChange={setMode} />
       <SidebarInset
-        className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-75 ease-linear"
+        className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-[35ms] ease-out"
         style={{
-          marginLeft: pinned ? "var(--sidebar-width)" : 0,
-          paddingLeft: pinned ? 0 : "var(--sidebar-width-icon)",
+          marginLeft: mode === "pinned" ? "var(--sidebar-width)" : mode === "pinned-collapsed" ? "var(--sidebar-width-icon)" : 0,
+          paddingLeft: mode === "hover" ? "var(--sidebar-width-icon)" : 0,
         }}
       >
         {/* Шапка */}

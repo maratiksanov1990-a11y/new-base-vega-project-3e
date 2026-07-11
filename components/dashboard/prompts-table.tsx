@@ -146,6 +146,7 @@ export function PromptsTable() {
         </Table>
       </div>
 
+      <button id="add-prompt-trigger" className="hidden" onClick={openAdd} />
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
@@ -193,5 +194,4 @@ export function PromptsTable() {
   )
 }
 
-      {/* скрытая кнопка для внешнего вызова диалога */}
-      <button id="add-prompt-trigger" className="hidden" onClick={openAdd} />
+
