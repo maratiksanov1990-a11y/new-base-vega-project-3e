@@ -157,7 +157,7 @@ export function OrdersTable() {
                       aria-label={`Выбрать заказ ${order.id}`}
                     />
                   </TableCell>
-                  <TableCell className="font-medium text-foreground">{order.id}</TableCell>
+                  <TableCell className="font-medium text-muted-foreground">{order.id}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar className="size-8">
