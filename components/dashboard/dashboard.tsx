@@ -1,28 +1,55 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Plus, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/dashboard/app-sidebar"
 import { OrdersTable } from "@/components/dashboard/orders-table"
-import { ShipmentsTable } from "@/components/dashboard/shipments-table"
+import { GenerationsTable } from "@/components/dashboard/generations-table"
+import { PromptsTable } from "@/components/dashboard/prompts-table"
+import { UsersTable } from "@/components/dashboard/users-table"
+import { ApiKeysTable } from "@/components/dashboard/api-keys-table"
+import { TariffsView } from "@/components/dashboard/tariffs-view"
+import { StatCards } from "@/components/dashboard/stat-cards"
+
+type Section = "Обзор" | "Генерации" | "Промты" | "Пользователи" | "API ключи" | "Тарифы" | "Аналитика"
+
+const sectionConfig: Record<Section, {
+  buttonLabel: string
+  searchPlaceholder: string
+  hasButton: boolean
+  hasSearch: boolean
+}> = {
+  "Обзор":         { buttonLabel: "Новый заказ",    searchPlaceholder: "Поиск заказов…",         hasButton: true,  hasSearch: true  },
+  "Генерации":     { buttonLabel: "",                searchPlaceholder: "Поиск генераций…",        hasButton: false, hasSearch: true  },
+  "Промты":        { buttonLabel: "Добавить промт",  searchPlaceholder: "Поиск промтов…",          hasButton: true,  hasSearch: true  },
+  "Пользователи":  { buttonLabel: "",                searchPlaceholder: "Поиск пользователей…",    hasButton: false, hasSearch: true  },
+  "API ключи":     { buttonLabel: "Добавить ключ",   searchPlaceholder: "Поиск ключей…",           hasButton: true,  hasSearch: true  },
+  "Тарифы":        { buttonLabel: "Добавить тариф",  searchPlaceholder: "",                        hasButton: true,  hasSearch: false },
+  "Аналитика":     { buttonLabel: "",                searchPlaceholder: "",                        hasButton: false, hasSearch: false },
+}
 
 export function Dashboard() {
-  const [active, setActive] = useState("Обзор")
+  const [active, setActive] = useState<Section>("Обзор")
   const [pinned, setPinned] = useState(false)
+  const promptsAddRef = useRef<HTMLButtonElement>(null)
+  const apiKeysAddRef = useRef<HTMLButtonElement>(null)
 
-  const isOrders = active === "Заказы"
-  const buttonLabel = isOrders ? "Новая доставка" : "Новый заказ"
-  const searchPlaceholder = isOrders ? "Поиск доставок…" : "Поиск заказов…"
+  const cfg = sectionConfig[active] ?? sectionConfig["Обзор"]
+
+  const handleAddClick = () => {
+    if (active === "Промты") {
+      document.getElementById("add-prompt-trigger")?.click()
+    } else if (active === "API ключи") {
+      document.getElementById("add-api-key-trigger")?.click()
+    }
+  }
 
   return (
     <SidebarProvider defaultOpen={false}>
-      <AppSidebar active={active} onSelect={setActive} onPinChange={setPinned} />
+      <AppSidebar active={active} onSelect={(s) => setActive(s as Section)} onPinChange={setPinned} />
       <SidebarInset
         className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-75 ease-linear"
         style={{
@@ -30,24 +57,50 @@ export function Dashboard() {
           paddingLeft: pinned ? 0 : "var(--sidebar-width-icon)",
         }}
       >
+        {/* Шапка */}
         <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-border bg-background px-4 sm:px-6">
-          <Button size="sm" className="h-8">
-            <Plus className="size-4" />
-            {buttonLabel}
-          </Button>
-          <div className="relative w-full max-w-xs">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder={searchPlaceholder}
-              className="h-8 pl-9"
-              aria-label={searchPlaceholder}
-            />
+          <div className="flex items-center gap-3">
+            <h1 className="text-sm font-semibold text-foreground">{active}</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            {cfg.hasSearch && (
+              <div className="relative w-full max-w-xs">
+                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder={cfg.searchPlaceholder}
+                  className="h-8 pl-9"
+                  aria-label={cfg.searchPlaceholder}
+                />
+              </div>
+            )}
+            {cfg.hasButton && (
+              <Button size="sm" className="h-8 shrink-0" onClick={handleAddClick}>
+                <Plus className="size-4" />
+                {cfg.buttonLabel}
+              </Button>
+            )}
           </div>
         </header>
 
-        <main className="flex min-h-0 flex-1 flex-col p-6">
-          {isOrders ? <ShipmentsTable /> : <OrdersTable />}
+        {/* Контент */}
+        <main className="flex min-h-0 flex-1 flex-col gap-4 overflow-auto p-6">
+          {active === "Обзор" && (
+            <>
+              <StatCards />
+              <OrdersTable />
+            </>
+          )}
+          {active === "Генерации"    && <GenerationsTable />}
+          {active === "Промты"       && <PromptsTable />}
+          {active === "Пользователи" && <UsersTable />}
+          {active === "API ключи"    && <ApiKeysTable />}
+          {active === "Тарифы"       && <TariffsView />}
+          {active === "Аналитика"    && (
+            <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">
+              Аналитика в разработке
+            </div>
+          )}
         </main>
       </SidebarInset>
     </SidebarProvider>

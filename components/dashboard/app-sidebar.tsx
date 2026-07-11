@@ -4,10 +4,12 @@ import * as React from "react"
 import { useTheme } from "next-themes"
 import {
   LayoutDashboard,
-  ShoppingCart,
+  Sparkles,
   Users,
   BarChart3,
-  Package,
+  FileText,
+  KeyRound,
+  CreditCard,
   Settings,
   Moon,
   Sun,
@@ -30,11 +32,13 @@ import {
 } from "@/components/ui/sidebar"
 
 const navItems = [
-  { title: "Обзор", icon: LayoutDashboard },
-  { title: "Заказы", icon: ShoppingCart },
-  { title: "Клиенты", icon: Users },
-  { title: "Товары", icon: Package },
-  { title: "Аналитика", icon: BarChart3 },
+  { title: "Обзор",      icon: LayoutDashboard },
+  { title: "Генерации",  icon: Sparkles },
+  { title: "Промты",     icon: FileText },
+  { title: "Пользователи", icon: Users },
+  { title: "API ключи",  icon: KeyRound },
+  { title: "Тарифы",     icon: CreditCard },
+  { title: "Аналитика",  icon: BarChart3 },
 ]
 
 type AppSidebarProps = {
