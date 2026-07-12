@@ -62,6 +62,9 @@ export function AppSidebar({ active, onSelect, onModeChange }: AppSidebarProps) 
 
   const OPEN_ZONE  = 71  // px — открывать при входе курсора в эту зону
   const CLOSE_ZONE = 100 // px — закрывать когда курсор уходит правее этой зоны
+  // Задержка должна быть больше длительности анимации сайдбара (35ms),
+  // иначе два setState сливаются в один рендер и анимация пропускается
+  const OPEN_SETTLE_MS = 80
 
   // Вся логика открытия/закрытия через document mousemove
   React.useEffect(() => {
@@ -74,7 +77,8 @@ export function AppSidebar({ active, onSelect, onModeChange }: AppSidebarProps) 
           hoverOpenedRef.current = true
           mouseMoveActiveRef.current = false
           setOpen(true)
-          setTimeout(() => { mouseMoveActiveRef.current = true }, 70)
+          // Ждём завершения анимации открытия прежде чем разрешить закрытие
+          setTimeout(() => { mouseMoveActiveRef.current = true }, OPEN_SETTLE_MS)
         }
       } else if (e.clientX > CLOSE_ZONE) {
         // Курсор вышел за зону закрытия
@@ -91,18 +95,13 @@ export function AppSidebar({ active, onSelect, onModeChange }: AppSidebarProps) 
   }, [setOpen])
 
   const handlePin = React.useCallback(() => {
-    setPinned((prev) => {
-      const next = !prev
-      onModeChange?.(next ? "pinned" : "hover")
-      if (next) {
-        hoverOpenedRef.current = false
-        mouseMoveActiveRef.current = false
-        setOpen(true)
-      } else {
-        setOpen(false)
-      }
-      return next
-    })
+    const next = !pinnedRef.current
+    setPinned(next)
+    onModeChange?.(next ? "pinned" : "hover")
+    hoverOpenedRef.current = false
+    mouseMoveActiveRef.current = false
+    // Небольшой defer чтобы state обновился до вызова setOpen
+    setTimeout(() => setOpen(next), 0)
   }, [setOpen, onModeChange])
 
   return (
