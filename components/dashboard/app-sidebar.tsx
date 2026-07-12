@@ -41,13 +41,15 @@ const navItems = [
   { title: "Аналитика",  icon: BarChart3 },
 ]
 
+export type SidebarMode = "hover" | "pinned"
+
 type AppSidebarProps = {
   active: string
   onSelect: (title: string) => void
-  onPinChange?: (pinned: boolean) => void
+  onModeChange?: (mode: SidebarMode) => void
 }
 
-export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
+export function AppSidebar({ active, onSelect, onModeChange }: AppSidebarProps) {
   const { state, setOpen } = useSidebar()
   const [pinned, setPinned] = React.useState(false)
   const hoverOpenedRef = React.useRef(false)
@@ -91,16 +93,17 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
   const handlePin = React.useCallback(() => {
     setPinned((prev) => {
       const next = !prev
-      onPinChange?.(next)
+      onModeChange?.(next ? "pinned" : "hover")
       if (next) {
         hoverOpenedRef.current = false
+        mouseMoveActiveRef.current = false
         setOpen(true)
       } else {
         setOpen(false)
       }
       return next
     })
-  }, [setOpen, onPinChange])
+  }, [setOpen, onModeChange])
 
   return (
     <Sidebar collapsible="icon" className="z-20">

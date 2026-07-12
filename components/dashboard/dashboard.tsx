@@ -5,7 +5,7 @@ import { Plus, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/dashboard/app-sidebar"
+import { AppSidebar, type SidebarMode } from "@/components/dashboard/app-sidebar"
 import { OrdersTable } from "@/components/dashboard/orders-table"
 import { GenerationsTable } from "@/components/dashboard/generations-table"
 import { PromptsTable } from "@/components/dashboard/prompts-table"
@@ -33,7 +33,7 @@ const sectionConfig: Record<Section, {
 
 export function Dashboard() {
   const [active, setActive] = useState<Section>("Обзор")
-  const [mode, setMode] = useState<"hover" | "pinned" | "pinned-collapsed">("hover")
+  const [mode, setMode] = useState<SidebarMode>("hover")
 
   const cfg = sectionConfig[active] ?? sectionConfig["Обзор"]
 
@@ -51,7 +51,7 @@ export function Dashboard() {
       <SidebarInset
         className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-[35ms] ease-out"
         style={{
-          marginLeft: mode === "pinned" ? "var(--sidebar-width)" : mode === "pinned-collapsed" ? "var(--sidebar-width-icon)" : 0,
+          marginLeft: mode === "pinned" ? "var(--sidebar-width)" : 0,
           paddingLeft: mode === "hover" ? "var(--sidebar-width-icon)" : 0,
         }}
       >
