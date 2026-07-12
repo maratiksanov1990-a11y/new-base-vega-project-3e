@@ -13,8 +13,9 @@ import {
   Settings,
   Moon,
   Sun,
-  PanelLeftClose,
   PanelLeftOpen,
+  PanelLeftClose,
+  PinOff,
 } from "lucide-react"
 
 import {
@@ -32,42 +33,54 @@ import {
 } from "@/components/ui/sidebar"
 
 const navItems = [
-  { title: "Обзор",      icon: LayoutDashboard },
-  { title: "Генерации",  icon: Sparkles },
-  { title: "Промты",     icon: FileText },
-  { title: "Пользователи", icon: Users },
-  { title: "API ключи",  icon: KeyRound },
-  { title: "Тарифы",     icon: CreditCard },
-  { title: "Аналитика",  icon: BarChart3 },
+  { title: "Обзор",         icon: LayoutDashboard },
+  { title: "Генерации",     icon: Sparkles },
+  { title: "Промты",        icon: FileText },
+  { title: "Пользователи",  icon: Users },
+  { title: "API ключи",     icon: KeyRound },
+  { title: "Тарифы",        icon: CreditCard },
+  { title: "Аналитика",     icon: BarChart3 },
 ]
+
+export type SidebarMode = "hover" | "pinned" | "pinned-collapsed"
 
 type AppSidebarProps = {
   active: string
   onSelect: (title: string) => void
-  onPinChange?: (pinned: boolean) => void
+  onModeChange?: (mode: SidebarMode) => void
 }
 
-export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
-  const { state, setOpen } = useSidebar()
-  const [pinned, setPinned] = React.useState(false)
-  const hoverOpenedRef = React.useRef(false)
+export function AppSidebar({ active, onSelect, onModeChange }: AppSidebarProps) {
+  const { setOpen } = useSidebar()
+  const [mode, setMode] = React.useState<SidebarMode>("hover")
 
-  const pinnedRef = React.useRef(pinned)
-  React.useEffect(() => { pinnedRef.current = pinned }, [pinned])
-
-  // После открытия ховером даём время анимации завершиться перед проверкой правой половины
+  const hoverOpenedRef    = React.useRef(false)
   const mouseMoveActiveRef = React.useRef(false)
+  const modeRef           = React.useRef<SidebarMode>("hover")
 
-  const OPEN_ZONE  = 71  // px — открывать при входе курсора в эту зону
-  const CLOSE_ZONE = 100 // px — закрывать когда курсор уходит правее этой зоны
+  const OPEN_ZONE  = 71
+  const CLOSE_ZONE = 100
 
-  // Вся логика открытия/закрытия через document mousemove
+  const applyMode = React.useCallback((next: SidebarMode) => {
+    modeRef.current = next
+    setMode(next)
+    onModeChange?.(next)
+    if (next === "pinned") {
+      hoverOpenedRef.current = false
+      mouseMoveActiveRef.current = false
+      setOpen(true)
+    } else {
+      hoverOpenedRef.current = false
+      mouseMoveActiveRef.current = false
+      setOpen(false)
+    }
+  }, [setOpen, onModeChange])
+
   React.useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      if (pinnedRef.current) return
+      if (modeRef.current !== "hover") return
 
       if (e.clientX <= OPEN_ZONE) {
-        // Курсор в зоне открытия
         if (!hoverOpenedRef.current) {
           hoverOpenedRef.current = true
           mouseMoveActiveRef.current = false
@@ -75,32 +88,16 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
           setTimeout(() => { mouseMoveActiveRef.current = true }, 70)
         }
       } else if (e.clientX > CLOSE_ZONE) {
-        // Курсор вышел за зону закрытия
         if (hoverOpenedRef.current && mouseMoveActiveRef.current) {
           hoverOpenedRef.current = false
           mouseMoveActiveRef.current = false
           setOpen(false)
         }
       }
-      // Между OPEN_ZONE и CLOSE_ZONE — ничего не делаем (гистерезис)
     }
     document.addEventListener("mousemove", onMouseMove)
     return () => document.removeEventListener("mousemove", onMouseMove)
   }, [setOpen])
-
-  const handlePin = React.useCallback(() => {
-    setPinned((prev) => {
-      const next = !prev
-      onPinChange?.(next)
-      if (next) {
-        hoverOpenedRef.current = false
-        setOpen(true)
-      } else {
-        setOpen(false)
-      }
-      return next
-    })
-  }, [setOpen, onPinChange])
 
   return (
     <Sidebar collapsible="icon" className="z-20">
@@ -130,15 +127,7 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip={pinned ? "Открепить панель" : "Закрепить панель"}
-              onClick={handlePin}
-            >
-              {pinned ? <PanelLeftClose /> : <PanelLeftOpen />}
-              <span>{pinned ? "Открепить панель" : "Закрепить панель"}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          <SidebarModeButtons mode={mode} onApply={applyMode} />
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Настройки">
               <Settings />
@@ -151,6 +140,58 @@ export function AppSidebar({ active, onSelect, onPinChange }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
+  )
+}
+
+function SidebarModeButtons({ mode, onApply }: { mode: SidebarMode; onApply: (m: SidebarMode) => void }) {
+  const { state } = useSidebar()
+  const isCollapsed = state === "collapsed"
+
+  const modes: { value: SidebarMode; label: string; icon: React.ElementType }[] = [
+    { value: "hover",            label: "С наведением",    icon: PanelLeftOpen  },
+    { value: "pinned",           label: "Закреплённая",     icon: PanelLeftClose },
+    { value: "pinned-collapsed", label: "Свёрнутая",        icon: PinOff         },
+  ]
+
+  if (isCollapsed) {
+    const currentIndex = modes.findIndex(m => m.value === mode)
+    const next = modes[(currentIndex + 1) % modes.length]
+    const CurrentIcon = modes[currentIndex].icon
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          tooltip={`Режим: ${modes[currentIndex].label}`}
+          onClick={() => onApply(next.value)}
+        >
+          <CurrentIcon />
+          <span>Режим панели</span>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    )
+  }
+
+  return (
+    <SidebarMenuItem>
+      <div className="flex w-full items-center gap-1 rounded-md px-2 py-1">
+        <span className="mr-auto truncate text-xs text-sidebar-foreground/60">Панель</span>
+        <div className="flex items-center gap-0.5">
+          {modes.map(({ value, label, icon: Icon }) => (
+            <button
+              key={value}
+              title={label}
+              onClick={() => onApply(value)}
+              className={`flex size-7 items-center justify-center rounded-md transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground ${
+                mode === value
+                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                  : "text-sidebar-foreground/60"
+              }`}
+            >
+              <Icon className="size-4" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </SidebarMenuItem>
   )
 }
 
@@ -177,12 +218,10 @@ function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
+  React.useEffect(() => { setMounted(true) }, [])
 
   const isDark = mounted ? resolvedTheme === "dark" : true
-  const label = isDark ? "Светлая тема" : "Тёмная тема"
+  const label  = isDark ? "Светлая тема" : "Тёмная тема"
 
   return (
     <SidebarMenuButton
