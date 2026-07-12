@@ -53,7 +53,7 @@ export function Dashboard() {
         style={{
           marginLeft: mode === "pinned" ? "var(--sidebar-width)" : 0,
           paddingLeft: mode === "hover" ? "var(--sidebar-width-icon)" : 0,
-          transition: "margin-left 55ms cubic-bezier(0.4,0,0.2,1), padding-left 55ms cubic-bezier(0.4,0,0.2,1)",
+          transition: "margin-left 35ms cubic-bezier(0.4,0,0.2,1), padding-left 35ms cubic-bezier(0.4,0,0.2,1)",
         }}
       >
         {/* Шапка */}
