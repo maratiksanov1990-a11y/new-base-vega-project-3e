@@ -92,10 +92,10 @@ export function Dashboard() {
               </div>
             </>
           )}
-          {active === "Генерации"    && <GenerationsTable />}
-          {active === "Промты"       && <PromptsTable />}
-          {active === "Пользователи" && <UsersTable />}
-          {active === "API ключи"    && <ApiKeysTable />}
+          {active === "Генерации"    && <div className="flex min-h-0 flex-1 flex-col"><GenerationsTable /></div>}
+          {active === "Промты"       && <div className="flex min-h-0 flex-1 flex-col"><PromptsTable /></div>}
+          {active === "Пользователи" && <div className="flex min-h-0 flex-1 flex-col"><UsersTable /></div>}
+          {active === "API ключи"    && <div className="flex min-h-0 flex-1 flex-col"><ApiKeysTable /></div>}
           {active === "Тарифы"       && <TariffsView />}
           {active === "Аналитика"    && (
             <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">
