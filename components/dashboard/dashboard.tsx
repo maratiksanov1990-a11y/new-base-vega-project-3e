@@ -49,10 +49,11 @@ export function Dashboard() {
     <SidebarProvider defaultOpen={false}>
       <AppSidebar active={active} onSelect={(s) => setActive(s as Section)} onModeChange={setMode} />
       <SidebarInset
-        className="flex h-svh flex-col overflow-hidden transition-[margin-left,padding-left] duration-[35ms] ease-out"
+        className="flex h-svh flex-col overflow-hidden"
         style={{
           marginLeft: mode === "pinned" ? "var(--sidebar-width)" : 0,
           paddingLeft: mode === "hover" ? "var(--sidebar-width-icon)" : 0,
+          transition: "margin-left 220ms cubic-bezier(0.4,0,0.2,1), padding-left 220ms cubic-bezier(0.4,0,0.2,1)",
         }}
       >
         {/* Шапка */}
