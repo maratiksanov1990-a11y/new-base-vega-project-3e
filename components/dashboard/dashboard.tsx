@@ -83,11 +83,13 @@ export function Dashboard() {
         </header>
 
         {/* Контент */}
-        <main className="flex min-h-0 flex-1 flex-col gap-4 overflow-auto p-6">
+        <main className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden p-6">
           {active === "Обзор" && (
             <>
               <StatCards />
-              <OrdersTable />
+              <div className="flex min-h-0 flex-1 flex-col">
+                <OrdersTable />
+              </div>
             </>
           )}
           {active === "Генерации"    && <GenerationsTable />}
