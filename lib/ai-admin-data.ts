@@ -108,19 +108,20 @@ export type ApiKey = {
   purpose: ApiKeyPurpose // назначение: VK или MAX
   key: string
   status: ApiKeyStatus
-  balance: number | null
+  credits: number        // количество кредитов
+  balance: number        // баланс в USD
   checkedAt: string
   createdAt: string
 }
 
 export const apiKeys: ApiKey[] = [
-  { id: "K-001", name: "yevugogo01@gmail.com",          provider: "kie.ai", purpose: "VK",  key: "sk-kie-****-a1b2", status: "Активен",  balance: 42.50, checkedAt: "11.07.2026 14:32", createdAt: "01.05.2026" },
-  { id: "K-002", name: "maximmironov200@gmail.com",      provider: "kie.ai", purpose: "VK",  key: "sk-kie-****-c3d4", status: "Активен",  balance: 38.10, checkedAt: "11.07.2026 14:32", createdAt: "01.05.2026" },
-  { id: "K-003", name: "egafarov663@gmail.com",          provider: "kie.ai", purpose: "VK",  key: "sk-kie-****-e5f6", status: "Активен",  balance: 31.60, checkedAt: "11.07.2026 14:32", createdAt: "01.05.2026" },
-  { id: "K-004", name: "lena1115464@gmail.com",          provider: "kie.ai", purpose: "MAX", key: "sk-kie-****-g7h8", status: "Активен",  balance: 55.80, checkedAt: "11.07.2026 14:32", createdAt: "15.05.2026" },
-  { id: "K-005", name: "sitdikovasafina92@gmail.com",    provider: "kie.ai", purpose: "MAX", key: "sk-kie-****-i9j0", status: "Отключён", balance: null,  checkedAt: "10.07.2026 09:10", createdAt: "15.05.2026" },
-  { id: "K-006", name: "kirazaika5@gmail.com",           provider: "kie.ai", purpose: "MAX", key: "sk-kie-****-k1l2", status: "Активен",  balance: 22.30, checkedAt: "11.07.2026 13:58", createdAt: "01.06.2026" },
-  { id: "K-007", name: "2018SergeyIvanov@gmail.ru",      provider: "fal.ai", purpose: "VK",  key: "fal-****-m3n4",    status: "Активен",  balance: 18.75, checkedAt: "11.07.2026 14:32", createdAt: "01.06.2026" },
+  { id: "K-001", name: "yevugogo01@gmail.com",       provider: "kie.ai", purpose: "VK",  key: "sk-kie-****-a1b2", status: "Активен",  credits: 3137,  balance: 62.74,  checkedAt: "11.07.2026 14:32", createdAt: "01.05.2026" },
+  { id: "K-002", name: "maximmironov200@gmail.com",   provider: "kie.ai", purpose: "VK",  key: "sk-kie-****-c3d4", status: "Активен",  credits: 53830, balance: 1076.6, checkedAt: "11.07.2026 14:32", createdAt: "01.05.2026" },
+  { id: "K-003", name: "egafarov663@gmail.com",       provider: "kie.ai", purpose: "VK",  key: "sk-kie-****-e5f6", status: "Активен",  credits: 91886, balance: 1837.72,checkedAt: "11.07.2026 14:32", createdAt: "01.05.2026" },
+  { id: "K-004", name: "lena1115464@gmail.com",       provider: "kie.ai", purpose: "MAX", key: "sk-kie-****-g7h8", status: "Активен",  credits: 14768, balance: 295.36, checkedAt: "11.07.2026 14:32", createdAt: "15.05.2026" },
+  { id: "K-005", name: "sitdikovasafina92@gmail.com", provider: "kie.ai", purpose: "MAX", key: "sk-kie-****-i9j0", status: "Отключён", credits: 3,     balance: 0.06,   checkedAt: "10.07.2026 09:10", createdAt: "15.05.2026" },
+  { id: "K-006", name: "kirazaika5@gmail.com",        provider: "kie.ai", purpose: "MAX", key: "sk-kie-****-k1l2", status: "Активен",  credits: 40816, balance: 816.32, checkedAt: "11.07.2026 13:58", createdAt: "01.06.2026" },
+  { id: "K-007", name: "yevugogo01@gmail.com",        provider: "fal.ai", purpose: "VK",  key: "fal-****-m3n4",    status: "Отключён", credits: 0,     balance: 0,      checkedAt: "11.07.2026 14:32", createdAt: "01.06.2026" },
 ]
 
 // ─── AI модели ───────────────────────────────────────────────────────────────

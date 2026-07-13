@@ -58,14 +58,14 @@ export function ApiKeysTable() {
         <Table containerClassName="overflow-auto">
           <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
             <TableRow className="h-14 hover:bg-transparent">
-              <TableHead className="min-w-[60px] pl-4">ID</TableHead>
+              <TableHead className="min-w-[220px] pl-4">Название</TableHead>
               <TableHead className="min-w-[100px]">Провайдер</TableHead>
-              <TableHead className="min-w-[240px]">Название</TableHead>
-              <TableHead className="min-w-[100px]">Назначение</TableHead>
-              <TableHead className="min-w-[100px]">Статус</TableHead>
-              <TableHead className="min-w-[110px]">Баланс</TableHead>
+              <TableHead className="min-w-[110px]">Назначение</TableHead>
+              <TableHead className="min-w-[110px]">Статус</TableHead>
+              <TableHead className="min-w-[110px] text-right">Кредит</TableHead>
+              <TableHead className="min-w-[120px] text-right">Баланс $</TableHead>
               <TableHead className="min-w-[180px]">Проверен</TableHead>
-              <TableHead className="min-w-[100px] pr-4 text-right">Действия</TableHead>
+              <TableHead className="min-w-[90px] pr-4 text-right">Действия</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -74,11 +74,7 @@ export function ApiKeysTable() {
               const isRevealed = revealed.has(key.id)
               return (
                 <TableRow key={key.id} className="h-14">
-                  <TableCell className="pl-4 font-mono text-xs text-muted-foreground">{key.id}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="text-xs">{key.provider}</Badge>
-                  </TableCell>
-                  <TableCell>
+                  <TableCell className="pl-4">
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-foreground">{key.name}</span>
                       <Button
@@ -98,6 +94,9 @@ export function ApiKeysTable() {
                     </div>
                   </TableCell>
                   <TableCell>
+                    <Badge variant="outline" className="text-xs">{key.provider}</Badge>
+                  </TableCell>
+                  <TableCell>
                     <Badge
                       variant="outline"
                       className={cn(
@@ -113,17 +112,18 @@ export function ApiKeysTable() {
                   <TableCell>
                     <Badge className={cn("text-xs font-medium", status.className)}>{status.label}</Badge>
                   </TableCell>
-                  <TableCell>
-                    {key.balance !== null ? (
-                      <span className={cn(
-                        "text-sm font-medium",
-                        key.balance < 5 ? "text-destructive" : "text-foreground"
-                      )}>
-                        ${key.balance.toFixed(2)}
-                      </span>
-                    ) : (
-                      <span className="text-sm text-muted-foreground">—</span>
-                    )}
+                  <TableCell className="text-right">
+                    <span className="text-sm tabular-nums text-muted-foreground">
+                      {key.credits.toLocaleString("ru-RU")}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className={cn(
+                      "text-sm font-medium tabular-nums",
+                      key.balance < 5 ? "text-destructive" : "text-foreground"
+                    )}>
+                      {key.balance.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{key.checkedAt}</TableCell>
                   <TableCell className="pr-4">
