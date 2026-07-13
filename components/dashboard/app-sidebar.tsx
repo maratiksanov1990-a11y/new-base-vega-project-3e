@@ -9,7 +9,7 @@ import {
   BarChart3,
   FileText,
   KeyRound,
-  BrainCircuit,
+  Cpu,
   CreditCard,
   Settings,
   Moon,
@@ -43,7 +43,7 @@ const mainNavItems = [
 
 const aiProviderItems = [
   { title: "API ключи",  icon: KeyRound },
-  { title: "AI модели",  icon: BrainCircuit },
+  { title: "AI модели",  icon: Cpu },
 ]
 
 export type SidebarMode = "hover" | "pinned"
