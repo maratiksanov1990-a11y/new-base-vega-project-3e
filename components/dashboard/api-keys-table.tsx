@@ -116,13 +116,13 @@ export function ApiKeysTable() {
                   </TableCell>
                   <TableCell className="text-right">
                     <span className={cn(
-                      "text-sm font-medium tabular-nums",
+                      "font-sans text-sm font-medium tabular-nums",
                       key.balance < 5 ? "text-destructive" : "text-foreground"
                     )}>
                       {key.balance.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{key.checkedAt}</TableCell>
+                  <TableCell className="font-sans text-sm text-muted-foreground">{key.checkedAt}</TableCell>
                   <TableCell className="pr-4">
                     <div className="flex items-center justify-end gap-1">
                       <Button
