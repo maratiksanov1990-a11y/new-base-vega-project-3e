@@ -64,7 +64,7 @@ export function ApiKeysTable() {
               <TableHead className="min-w-[110px]">Статус</TableHead>
               <TableHead className="min-w-[110px] text-right">Кредит</TableHead>
               <TableHead className="min-w-[120px] text-right">Баланс $</TableHead>
-              <TableHead className="min-w-[180px]">Проверен</TableHead>
+              <TableHead className="min-w-[180px] pl-8">Проверен</TableHead>
               <TableHead className="min-w-[90px] pr-4 text-right">Действия</TableHead>
             </TableRow>
           </TableHeader>
@@ -122,7 +122,7 @@ export function ApiKeysTable() {
                       {key.balance.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{key.checkedAt}</TableCell>
+                  <TableCell className="pl-8 text-sm text-muted-foreground">{key.checkedAt}</TableCell>
                   <TableCell className="pr-4">
                     <div className="flex items-center justify-end gap-1">
                       <Button
