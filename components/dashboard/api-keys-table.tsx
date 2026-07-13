@@ -110,19 +110,19 @@ export function ApiKeysTable() {
                     <Badge className={cn("text-xs font-medium", status.className)}>{status.label}</Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className="text-sm tabular-nums text-muted-foreground">
+                    <span className="text-sm text-muted-foreground">
                       {key.credits.toLocaleString("ru-RU")}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
                     <span className={cn(
-                      "text-sm font-medium tabular-nums",
+                      "text-sm font-medium",
                       key.balance < 5 ? "text-destructive" : "text-foreground"
                     )}>
                       {key.balance.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </TableCell>
-                  <TableCell className="tabular-nums text-sm text-muted-foreground">{key.checkedAt}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{key.checkedAt}</TableCell>
                   <TableCell className="pr-4">
                     <div className="flex items-center justify-end gap-1">
                       <Button
