@@ -106,6 +106,8 @@ export type ApiKey = {
   provider: ApiKeyProvider
   key: string
   status: ApiKeyStatus
+  balance: number | null  // остаток в USD, null если неизвестно
+  checkedAt: string       // дата последней проверки
   requestsToday: number
   requestsLimit: number
   requestsTotal: number
@@ -114,13 +116,13 @@ export type ApiKey = {
 }
 
 export const apiKeys: ApiKey[] = [
-  { id: "K-001", name: "kie-01", provider: "kie.ai", key: "sk-kie-****-a1b2", status: "Активен",  requestsToday: 847,  requestsLimit: 10,  requestsTotal: 14230, lastUsed: "11.07.2026", createdAt: "01.05.2026" },
-  { id: "K-002", name: "kie-02", provider: "kie.ai", key: "sk-kie-****-c3d4", status: "Активен",  requestsToday: 912,  requestsLimit: 10,  requestsTotal: 11045, lastUsed: "11.07.2026", createdAt: "01.05.2026" },
-  { id: "K-003", name: "kie-03", provider: "kie.ai", key: "sk-kie-****-e5f6", status: "Лимит",    requestsToday: 10,   requestsLimit: 10,  requestsTotal: 9876,  lastUsed: "11.07.2026", createdAt: "01.05.2026" },
-  { id: "K-004", name: "kie-04", provider: "kie.ai", key: "sk-kie-****-g7h8", status: "Активен",  requestsToday: 634,  requestsLimit: 10,  requestsTotal: 8234,  lastUsed: "11.07.2026", createdAt: "15.05.2026" },
-  { id: "K-005", name: "kie-05", provider: "kie.ai", key: "sk-kie-****-i9j0", status: "Активен",  requestsToday: 701,  requestsLimit: 10,  requestsTotal: 7651,  lastUsed: "11.07.2026", createdAt: "15.05.2026" },
-  { id: "K-006", name: "kie-06", provider: "kie.ai", key: "sk-kie-****-k1l2", status: "Ошибка",   requestsToday: 0,    requestsLimit: 10,  requestsTotal: 6102,  lastUsed: "10.07.2026", createdAt: "01.06.2026" },
-  { id: "K-007", name: "fal-01", provider: "fal.ai", key: "fal-****-m3n4",    status: "Активен",  requestsToday: 234,  requestsLimit: 100, requestsTotal: 3201,  lastUsed: "11.07.2026", createdAt: "01.06.2026" },
+  { id: "K-001", name: "kie-01", provider: "kie.ai", key: "sk-kie-****-a1b2", status: "Активен",  balance: 42.50,  checkedAt: "11.07.2026 14:32", requestsToday: 847,  requestsLimit: 10,  requestsTotal: 14230, lastUsed: "11.07.2026", createdAt: "01.05.2026" },
+  { id: "K-002", name: "kie-02", provider: "kie.ai", key: "sk-kie-****-c3d4", status: "Активен",  balance: 38.10,  checkedAt: "11.07.2026 14:32", requestsToday: 912,  requestsLimit: 10,  requestsTotal: 11045, lastUsed: "11.07.2026", createdAt: "01.05.2026" },
+  { id: "K-003", name: "kie-03", provider: "kie.ai", key: "sk-kie-****-e5f6", status: "Лимит",    balance: 1.20,   checkedAt: "11.07.2026 14:32", requestsToday: 10,   requestsLimit: 10,  requestsTotal: 9876,  lastUsed: "11.07.2026", createdAt: "01.05.2026" },
+  { id: "K-004", name: "kie-04", provider: "kie.ai", key: "sk-kie-****-g7h8", status: "Активен",  balance: 55.80,  checkedAt: "11.07.2026 14:32", requestsToday: 634,  requestsLimit: 10,  requestsTotal: 8234,  lastUsed: "11.07.2026", createdAt: "15.05.2026" },
+  { id: "K-005", name: "kie-05", provider: "kie.ai", key: "sk-kie-****-i9j0", status: "Активен",  balance: 27.40,  checkedAt: "11.07.2026 13:58", requestsToday: 701,  requestsLimit: 10,  requestsTotal: 7651,  lastUsed: "11.07.2026", createdAt: "15.05.2026" },
+  { id: "K-006", name: "kie-06", provider: "kie.ai", key: "sk-kie-****-k1l2", status: "Ошибка",   balance: null,   checkedAt: "10.07.2026 09:10", requestsToday: 0,    requestsLimit: 10,  requestsTotal: 6102,  lastUsed: "10.07.2026", createdAt: "01.06.2026" },
+  { id: "K-007", name: "fal-01", provider: "fal.ai", key: "fal-****-m3n4",    status: "Активен",  balance: 18.75,  checkedAt: "11.07.2026 14:32", requestsToday: 234,  requestsLimit: 100, requestsTotal: 3201,  lastUsed: "11.07.2026", createdAt: "01.06.2026" },
 ]
 
 // ─── AI модели ───────────────────────────────────────────────────────────────
@@ -173,7 +175,7 @@ export const tariffs: Tariff[] = [
 
 export const aiStats = [
   { label: "Генераций сегодня",   value: "3 294",   change: "+18.2%", trend: "up"   as const, hint: "По сравнению со вчера" },
-  { label: "Активных пользов.",   value: "1 847",   change: "+12.5%", trend: "up"   as const, hint: "За последние 7 дней" },
+  { label: "Активных пользов.",   value: "1 847",   change: "+12.5%", trend: "up"   as const, hint: "За последние 7 дн��й" },
   { label: "Выручка сегодня",     value: "₽ 48 600", change: "+9.3%", trend: "up"   as const, hint: "По сравнению со вчера" },
   { label: "Ошибки генерации",    value: "1.4%",    change: "-0.3%",  trend: "up"   as const, hint: "Процент failed запросов" },
 ]
