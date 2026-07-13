@@ -10,11 +10,11 @@ import { OrdersTable } from "@/components/dashboard/orders-table"
 import { GenerationsTable } from "@/components/dashboard/generations-table"
 import { PromptsTable } from "@/components/dashboard/prompts-table"
 import { UsersTable } from "@/components/dashboard/users-table"
-import { ApiKeysTable } from "@/components/dashboard/api-keys-table"
+import { AiProvidersView, type AiProvidersTab } from "@/components/dashboard/ai-providers-view"
 import { TariffsView } from "@/components/dashboard/tariffs-view"
 import { StatCards } from "@/components/dashboard/stat-cards"
 
-type Section = "Обзор" | "Генерации" | "Промты" | "Пользователи" | "API ключи" | "Тарифы" | "Аналитика"
+type Section = "Обзор" | "Генерации" | "Промты" | "Пользователи" | "AI поставщики" | "Тарифы" | "Аналитика"
 
 const sectionConfig: Record<Section, {
   buttonLabel: string
@@ -22,26 +22,31 @@ const sectionConfig: Record<Section, {
   hasButton: boolean
   hasSearch: boolean
 }> = {
-  "Обзор":         { buttonLabel: "Новый заказ",    searchPlaceholder: "Поиск заказов…",         hasButton: true,  hasSearch: true  },
-  "Генерации":     { buttonLabel: "",                searchPlaceholder: "Поиск генераций…",        hasButton: false, hasSearch: true  },
-  "Промты":        { buttonLabel: "Добавить промт",  searchPlaceholder: "Поиск промтов…",          hasButton: true,  hasSearch: true  },
-  "Пользователи":  { buttonLabel: "",                searchPlaceholder: "Поиск пользователей…",    hasButton: false, hasSearch: true  },
-  "API ключи":     { buttonLabel: "Добавить ключ",   searchPlaceholder: "Поиск ключей…",           hasButton: true,  hasSearch: true  },
-  "Тарифы":        { buttonLabel: "Добавить тариф",  searchPlaceholder: "",                        hasButton: true,  hasSearch: false },
-  "Аналитика":     { buttonLabel: "",                searchPlaceholder: "",                        hasButton: false, hasSearch: false },
+  "Обзор":          { buttonLabel: "Новый заказ",    searchPlaceholder: "Поиск заказов…",         hasButton: true,  hasSearch: true  },
+  "Генерации":      { buttonLabel: "",                searchPlaceholder: "Поиск генераций…",        hasButton: false, hasSearch: true  },
+  "Промты":         { buttonLabel: "Добавить промт",  searchPlaceholder: "Поиск промтов…",          hasButton: true,  hasSearch: true  },
+  "Пользователи":   { buttonLabel: "",                searchPlaceholder: "Поиск пользователей…",    hasButton: false, hasSearch: true  },
+  "AI поставщики":  { buttonLabel: "Добавить ключ",   searchPlaceholder: "Поиск ключей…",           hasButton: true,  hasSearch: true  },
+  "Тарифы":         { buttonLabel: "Добавить тариф",  searchPlaceholder: "",                        hasButton: true,  hasSearch: false },
+  "Аналитика":      { buttonLabel: "",                searchPlaceholder: "",                        hasButton: false, hasSearch: false },
 }
 
 export function Dashboard() {
   const [active, setActive] = useState<Section>("Обзор")
   const [mode, setMode] = useState<SidebarMode>("hover")
+  const [aiTab, setAiTab] = useState<AiProvidersTab>("keys")
 
+  const isAiProviders = active === "AI поставщики"
   const cfg = sectionConfig[active] ?? sectionConfig["Обзор"]
+  // Для раздела "AI поставщики" подпись кнопки и поиска зависит от активной вкладки
+  const buttonLabel = isAiProviders ? (aiTab === "keys" ? "Добавить ключ" : "Добавить модель") : cfg.buttonLabel
+  const searchPlaceholder = isAiProviders ? (aiTab === "keys" ? "Поиск ключей…" : "Поиск моделей…") : cfg.searchPlaceholder
 
   const handleAddClick = () => {
     if (active === "Промты") {
       document.getElementById("add-prompt-trigger")?.click()
-    } else if (active === "API ключи") {
-      document.getElementById("add-api-key-trigger")?.click()
+    } else if (isAiProviders) {
+      document.getElementById(aiTab === "keys" ? "add-api-key-trigger" : "add-ai-model-trigger")?.click()
     }
   }
 
@@ -67,16 +72,16 @@ export function Dashboard() {
                 <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   type="search"
-                  placeholder={cfg.searchPlaceholder}
+                  placeholder={searchPlaceholder}
                   className="h-8 pl-9"
-                  aria-label={cfg.searchPlaceholder}
+                  aria-label={searchPlaceholder}
                 />
               </div>
             )}
             {cfg.hasButton && (
               <Button size="sm" className="h-8 shrink-0" onClick={handleAddClick}>
                 <Plus className="size-4" />
-                {cfg.buttonLabel}
+                {buttonLabel}
               </Button>
             )}
           </div>
@@ -95,7 +100,7 @@ export function Dashboard() {
           {active === "Генерации"    && <div className="flex min-h-0 flex-1 flex-col"><GenerationsTable /></div>}
           {active === "Промты"       && <div className="flex min-h-0 flex-1 flex-col"><PromptsTable /></div>}
           {active === "Пользователи" && <div className="flex min-h-0 flex-1 flex-col"><UsersTable /></div>}
-          {active === "API ключи"    && <div className="flex min-h-0 flex-1 flex-col"><ApiKeysTable /></div>}
+          {active === "AI поставщики" && <AiProvidersView onTabChange={setAiTab} />}
           {active === "Тарифы"       && <TariffsView />}
           {active === "Аналитика"    && (
             <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">

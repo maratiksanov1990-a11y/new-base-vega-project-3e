@@ -123,6 +123,30 @@ export const apiKeys: ApiKey[] = [
   { id: "K-007", name: "fal-01", provider: "fal.ai", key: "fal-****-m3n4",    status: "Активен",  requestsToday: 234,  requestsLimit: 100, requestsTotal: 3201,  lastUsed: "11.07.2026", createdAt: "01.06.2026" },
 ]
 
+// ─── AI модели ───────────────────────────────────────────────────────────────
+
+export type AiModelStatus = "Активна" | "Отключена" | "Тестирование"
+
+export type AiModel = {
+  id: string
+  name: string
+  provider: ApiKeyProvider
+  modelId: string
+  status: AiModelStatus
+  costPerGen: number   // рублей себестоимость
+  avgDuration: number  // секунды
+  generationsTotal: number
+  successRate: number  // %
+  addedAt: string
+}
+
+export const aiModels: AiModel[] = [
+  { id: "M-001", name: "GPT Image 1.5",        provider: "kie.ai", modelId: "gpt-image-1.5",        status: "Активна",      costPerGen: 18, avgDuration: 13, generationsTotal: 41230, successRate: 97, addedAt: "01.05.2026" },
+  { id: "M-002", name: "GPT Image 1.5",        provider: "fal.ai", modelId: "fal-ai/gpt-image-1.5", status: "Активна",      costPerGen: 21, avgDuration: 17, generationsTotal: 8450,  successRate: 95, addedAt: "01.05.2026" },
+  { id: "M-003", name: "GPT Image 1.5 HD",     provider: "kie.ai", modelId: "gpt-image-1.5-hd",     status: "Тестирование", costPerGen: 32, avgDuration: 24, generationsTotal: 312,   successRate: 93, addedAt: "05.07.2026" },
+  { id: "M-004", name: "Flux Pro 1.1",         provider: "fal.ai", modelId: "fal-ai/flux-pro/v1.1", status: "Отключена",    costPerGen: 15, avgDuration: 9,  generationsTotal: 1204,  successRate: 89, addedAt: "10.06.2026" },
+]
+
 // ─── Тарифы ──────────────────────────────────────────────────────────────────
 
 export type TariffStatus = "Активен" | "Скрыт"
