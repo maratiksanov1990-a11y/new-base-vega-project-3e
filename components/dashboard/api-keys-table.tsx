@@ -94,20 +94,17 @@ export function ApiKeysTable() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="text-xs">{key.provider}</Badge>
+                    <span className="text-sm text-muted-foreground">{key.provider}</span>
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        "text-xs font-medium",
-                        key.purpose === "VK"
-                          ? "bg-blue-500/10 text-blue-500 border-transparent"
-                          : "bg-purple-500/10 text-purple-500 border-transparent"
-                      )}
-                    >
+                    <span className={cn(
+                      "text-sm font-medium",
+                      key.purpose === "VK"
+                        ? "text-blue-500 dark:text-blue-400"
+                        : "text-violet-500 dark:text-violet-400"
+                    )}>
                       {key.purpose}
-                    </Badge>
+                    </span>
                   </TableCell>
                   <TableCell>
                     <Badge className={cn("text-xs font-medium", status.className)}>{status.label}</Badge>
