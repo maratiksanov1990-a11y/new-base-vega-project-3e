@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Plus, Trash2, RefreshCw, Eye, EyeOff } from "lucide-react"
+import { Trash2, RefreshCw, Eye, EyeOff } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -15,23 +15,23 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { apiKeys as initialKeys, type ApiKeyStatus, type ApiKeyProvider } from "@/lib/ai-admin-data"
+import { apiKeys as initialKeys, type ApiKeyStatus, type ApiKeyProvider, type ApiKeyPurpose } from "@/lib/ai-admin-data"
 
 const statusConfig: Record<ApiKeyStatus, { label: string; className: string }> = {
-  "Активен":  { label: "Активен",  className: "bg-chart-3/15 text-chart-3 border-transparent"         },
-  "Лимит":    { label: "Лимит",    className: "bg-chart-2/15 text-chart-2 border-transparent"         },
-  "Ошибка":   { label: "Ошибка",   className: "bg-destructive/15 text-destructive border-transparent"  },
-  "Отключён": { label: "Отключён", className: "bg-muted text-muted-foreground border-transparent"      },
+  "Активен":  { label: "Активен",  className: "bg-chart-3/15 text-chart-3 border-transparent"        },
+  "Лимит":    { label: "Лимит",    className: "bg-chart-2/15 text-chart-2 border-transparent"        },
+  "Ошибка":   { label: "Ошибка",   className: "bg-destructive/15 text-destructive border-transparent" },
+  "Отключён": { label: "Отключён", className: "bg-muted text-muted-foreground border-transparent"     },
 }
 
-type KeyForm = { name: string; provider: ApiKeyProvider; key: string }
-const emptyForm: KeyForm = { name: "", provider: "kie.ai", key: "" }
+type KeyForm = { name: string; provider: ApiKeyProvider; purpose: ApiKeyPurpose; key: string }
+const emptyForm: KeyForm = { name: "", provider: "kie.ai", purpose: "VK", key: "" }
 
 export function ApiKeysTable() {
-  const [items, setItems]       = useState(initialKeys)
-  const [revealed, setRevealed] = useState<Set<string>>(new Set())
+  const [items, setItems]           = useState(initialKeys)
+  const [revealed, setRevealed]     = useState<Set<string>>(new Set())
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [form, setForm]         = useState<KeyForm>(emptyForm)
+  const [form, setForm]             = useState<KeyForm>(emptyForm)
 
   const toggleReveal = (id: string) =>
     setRevealed((prev) => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next })
@@ -44,16 +44,13 @@ export function ApiKeysTable() {
     const newId = `K-${String(items.length + 1).padStart(3, "0")}`
     const now = new Date().toLocaleDateString("ru-RU")
     setItems((prev) => [...prev, {
-      id: newId, name: form.name, provider: form.provider, key: form.key,
-      status: "Активен", balance: null, checkedAt: "—",
-      requestsToday: 0, requestsLimit: 10, requestsTotal: 0,
-      lastUsed: "—", createdAt: now,
+      id: newId, name: form.name, provider: form.provider,
+      purpose: form.purpose, key: form.key,
+      status: "Активен", balance: null, checkedAt: "—", createdAt: now,
     }])
     setDialogOpen(false)
     setForm(emptyForm)
   }
-
-  const providers: ApiKeyProvider[] = ["kie.ai", "fal.ai"]
 
   return (
     <>
@@ -61,11 +58,12 @@ export function ApiKeysTable() {
         <Table containerClassName="overflow-auto">
           <TableHeader className="[&_tr]:border-b-0 [&_th]:sticky [&_th]:top-0 [&_th]:z-10 [&_th]:bg-card [&_th]:shadow-[inset_0_-1px_0_0_var(--border)]">
             <TableRow className="h-14 hover:bg-transparent">
-              <TableHead className="min-w-[80px] pl-4">ID</TableHead>
+              <TableHead className="min-w-[60px] pl-4">ID</TableHead>
               <TableHead className="min-w-[100px]">Провайдер</TableHead>
-              <TableHead className="min-w-[120px]">Название</TableHead>
+              <TableHead className="min-w-[240px]">Название</TableHead>
+              <TableHead className="min-w-[100px]">Назначение</TableHead>
               <TableHead className="min-w-[100px]">Статус</TableHead>
-              <TableHead className="min-w-[120px]">Баланс</TableHead>
+              <TableHead className="min-w-[110px]">Баланс</TableHead>
               <TableHead className="min-w-[180px]">Проверен</TableHead>
               <TableHead className="min-w-[100px] pr-4 text-right">Действия</TableHead>
             </TableRow>
@@ -82,12 +80,13 @@ export function ApiKeysTable() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-foreground">{key.name}</span>
+                      <span className="text-sm text-foreground">{key.name}</span>
                       <Button
                         size="icon"
                         variant="ghost"
                         className="size-6 shrink-0 text-muted-foreground"
                         onClick={() => toggleReveal(key.id)}
+                        title={isRevealed ? "Скрыть ключ" : "Показать ключ"}
                       >
                         {isRevealed ? <EyeOff className="size-3" /> : <Eye className="size-3" />}
                       </Button>
@@ -97,6 +96,19 @@ export function ApiKeysTable() {
                         </code>
                       )}
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="outline"
+                      className={cn(
+                        "text-xs font-medium",
+                        key.purpose === "VK"
+                          ? "bg-blue-500/10 text-blue-500 border-transparent"
+                          : "bg-purple-500/10 text-purple-500 border-transparent"
+                      )}
+                    >
+                      {key.purpose}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge className={cn("text-xs font-medium", status.className)}>{status.label}</Badge>
@@ -127,7 +139,7 @@ export function ApiKeysTable() {
                       <Button
                         size="icon"
                         variant="ghost"
-                        className="size-8 text-muted-foreground"
+                        className="size-8 text-muted-foreground hover:text-destructive"
                         onClick={() => handleDelete(key.id)}
                         title="Удалить"
                       >
@@ -156,14 +168,27 @@ export function ApiKeysTable() {
                 onChange={(e) => setForm((f) => ({ ...f, provider: e.target.value as ApiKeyProvider }))}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus:ring-1 focus:ring-ring"
               >
-                {providers.map((p) => <option key={p} value={p}>{p}</option>)}
+                <option value="kie.ai">kie.ai</option>
+                <option value="fal.ai">fal.ai</option>
               </select>
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="key-name">Название</Label>
+              <Label htmlFor="key-purpose">Назначение</Label>
+              <select
+                id="key-purpose"
+                value={form.purpose}
+                onChange={(e) => setForm((f) => ({ ...f, purpose: e.target.value as ApiKeyPurpose }))}
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus:ring-1 focus:ring-ring"
+              >
+                <option value="VK">VK</option>
+                <option value="MAX">MAX</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="key-name">Email аккаунта</Label>
               <Input
                 id="key-name"
-                placeholder="kie-07"
+                placeholder="example@gmail.com"
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               />
