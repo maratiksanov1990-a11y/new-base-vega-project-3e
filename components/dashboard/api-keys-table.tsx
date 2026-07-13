@@ -122,7 +122,7 @@ export function ApiKeysTable() {
                       {key.balance.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{key.checkedAt}</TableCell>
+                  <TableCell className="tabular-nums text-sm text-muted-foreground">{key.checkedAt}</TableCell>
                   <TableCell className="pr-4">
                     <div className="flex items-center justify-end gap-1">
                       <Button
