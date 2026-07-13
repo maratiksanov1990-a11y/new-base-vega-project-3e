@@ -9,6 +9,7 @@ import {
   BarChart3,
   FileText,
   KeyRound,
+  BrainCircuit,
   CreditCard,
   Settings,
   Moon,
@@ -31,14 +32,18 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-const navItems = [
-  { title: "Обзор",      icon: LayoutDashboard },
-  { title: "Генерации",  icon: Sparkles },
-  { title: "Промты",     icon: FileText },
+const mainNavItems = [
+  { title: "Обзор",        icon: LayoutDashboard },
+  { title: "Генерации",    icon: Sparkles },
+  { title: "Промты",       icon: FileText },
   { title: "Пользователи", icon: Users },
+  { title: "Тарифы",       icon: CreditCard },
+  { title: "Аналитика",    icon: BarChart3 },
+]
+
+const aiProviderItems = [
   { title: "API ключи",  icon: KeyRound },
-  { title: "Тарифы",     icon: CreditCard },
-  { title: "Аналитика",  icon: BarChart3 },
+  { title: "AI модели",  icon: BrainCircuit },
 ]
 
 export type SidebarMode = "hover" | "pinned"
@@ -114,7 +119,26 @@ export function AppSidebar({ active, onSelect, onModeChange }: AppSidebarProps) 
           <SidebarGroupLabel>Разделы</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item) => (
+              {mainNavItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    isActive={active === item.title}
+                    tooltip={item.title}
+                    onClick={() => onSelect(item.title)}
+                  >
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>AI поставщики</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {aiProviderItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     isActive={active === item.title}

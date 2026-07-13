@@ -11,10 +11,11 @@ import { GenerationsTable } from "@/components/dashboard/generations-table"
 import { PromptsTable } from "@/components/dashboard/prompts-table"
 import { UsersTable } from "@/components/dashboard/users-table"
 import { ApiKeysTable } from "@/components/dashboard/api-keys-table"
+import { AiModelsTable } from "@/components/dashboard/ai-models-table"
 import { TariffsView } from "@/components/dashboard/tariffs-view"
 import { StatCards } from "@/components/dashboard/stat-cards"
 
-type Section = "Обзор" | "Генерации" | "Промты" | "Пользователи" | "API ключи" | "Тарифы" | "Аналитика"
+type Section = "Обзор" | "Генерации" | "Промты" | "Пользователи" | "API ключи" | "AI модели" | "Тарифы" | "Аналитика"
 
 const sectionConfig: Record<Section, {
   buttonLabel: string
@@ -22,13 +23,14 @@ const sectionConfig: Record<Section, {
   hasButton: boolean
   hasSearch: boolean
 }> = {
-  "Обзор":         { buttonLabel: "Новый заказ",    searchPlaceholder: "Поиск заказов…",         hasButton: true,  hasSearch: true  },
-  "Генерации":     { buttonLabel: "",                searchPlaceholder: "Поиск генераций…",        hasButton: false, hasSearch: true  },
-  "Промты":        { buttonLabel: "Добавить промт",  searchPlaceholder: "Поиск промтов…",          hasButton: true,  hasSearch: true  },
-  "Пользователи":  { buttonLabel: "",                searchPlaceholder: "Поиск пользователей…",    hasButton: false, hasSearch: true  },
-  "API ключи":     { buttonLabel: "Добавить ключ",   searchPlaceholder: "Поиск ключей…",           hasButton: true,  hasSearch: true  },
-  "Тарифы":        { buttonLabel: "Добавить тариф",  searchPlaceholder: "",                        hasButton: true,  hasSearch: false },
-  "Аналитика":     { buttonLabel: "",                searchPlaceholder: "",                        hasButton: false, hasSearch: false },
+  "Обзор":         { buttonLabel: "Новый заказ",     searchPlaceholder: "Поиск заказов…",       hasButton: true,  hasSearch: true  },
+  "Генерации":     { buttonLabel: "",                 searchPlaceholder: "Поиск генераций…",     hasButton: false, hasSearch: true  },
+  "Промты":        { buttonLabel: "Добавить промт",   searchPlaceholder: "Поиск промтов…",       hasButton: true,  hasSearch: true  },
+  "Пользователи":  { buttonLabel: "",                 searchPlaceholder: "Поиск пользователей…", hasButton: false, hasSearch: true  },
+  "API ключи":     { buttonLabel: "Добавить ключ",    searchPlaceholder: "Поиск ключей…",        hasButton: true,  hasSearch: true  },
+  "AI модели":     { buttonLabel: "Добавить модель",  searchPlaceholder: "Поиск моделей…",       hasButton: true,  hasSearch: true  },
+  "Тарифы":        { buttonLabel: "Добавить тариф",   searchPlaceholder: "",                     hasButton: true,  hasSearch: false },
+  "Аналитика":     { buttonLabel: "",                 searchPlaceholder: "",                     hasButton: false, hasSearch: false },
 }
 
 export function Dashboard() {
@@ -42,6 +44,8 @@ export function Dashboard() {
       document.getElementById("add-prompt-trigger")?.click()
     } else if (active === "API ключи") {
       document.getElementById("add-api-key-trigger")?.click()
+    } else if (active === "AI модели") {
+      document.getElementById("add-ai-model-trigger")?.click()
     }
   }
 
@@ -96,6 +100,7 @@ export function Dashboard() {
           {active === "Промты"       && <div className="flex min-h-0 flex-1 flex-col"><PromptsTable /></div>}
           {active === "Пользователи" && <div className="flex min-h-0 flex-1 flex-col"><UsersTable /></div>}
           {active === "API ключи"    && <div className="flex min-h-0 flex-1 flex-col"><ApiKeysTable /></div>}
+          {active === "AI модели"    && <div className="flex min-h-0 flex-1 flex-col"><AiModelsTable /></div>}
           {active === "Тарифы"       && <TariffsView />}
           {active === "Аналитика"    && (
             <div className="flex flex-1 items-center justify-center text-muted-foreground text-sm">
