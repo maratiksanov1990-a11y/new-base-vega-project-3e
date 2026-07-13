@@ -18,10 +18,10 @@ import { cn } from "@/lib/utils"
 import { apiKeys as initialKeys, type ApiKeyStatus, type ApiKeyProvider, type ApiKeyPurpose } from "@/lib/ai-admin-data"
 
 const statusConfig: Record<ApiKeyStatus, { label: string; className: string }> = {
-  "Активен":  { label: "Активен",  className: "bg-green-500/15 text-green-400 border-transparent"   },
-  "Лимит":    { label: "Лимит",    className: "bg-yellow-500/15 text-yellow-400 border-transparent" },
-  "Ошибка":   { label: "Ошибка",   className: "bg-yellow-500/15 text-yellow-400 border-transparent" },
-  "Отключён": { label: "Отключён", className: "bg-red-500/15 text-red-400 border-transparent"       },
+  "Активен":  { label: "Активен",  className: "bg-green-100 text-green-700 border-transparent dark:bg-green-500/15 dark:text-green-400"     },
+  "Лимит":    { label: "Лимит",    className: "bg-orange-100 text-orange-600 border-transparent dark:bg-orange-500/15 dark:text-orange-400" },
+  "Ошибка":   { label: "Ошибка",   className: "bg-orange-100 text-orange-600 border-transparent dark:bg-orange-500/15 dark:text-orange-400" },
+  "Отключён": { label: "Отключён", className: "bg-red-100 text-red-600 border-transparent dark:bg-red-500/15 dark:text-red-400"             },
 }
 
 type KeyForm = { name: string; provider: ApiKeyProvider; purpose: ApiKeyPurpose; key: string }
